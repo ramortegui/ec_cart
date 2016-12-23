@@ -13,13 +13,19 @@ defmodule EcCart do
     index = Enum.find_index( items, fn(item) -> item.ec_sku == ec_cart_item.ec_sku end )
     case index do
       nil ->
-        %EcCart{
-          items: items++[ec_cart_item]
-        }
-      x ->
-        item = Enum.at( items, x )
+        case ec_cart_item.ec_qty do
+          x when x > 0 -> %EcCart{ items: items++[ec_cart_item] } 
+          _ -> %EcCart{ items: items }
+        end
+      index ->
+        item = Enum.at( items, index )
         item = %EcCartItem{ item | ec_qty: ( item.ec_qty + ec_cart_item.ec_qty ) }
-        %EcCart{ items: List.update_at(items, x, fn(old_item) -> %EcCartItem{ old_item | ec_qty: item.ec_qty } end )}
+        case item.ec_qty do
+          x when x <= 0 -> %EcCart{ items: List.delete_at(items, index ) }
+          _ ->
+            %EcCart{ items: List.update_at(items, index,
+              fn(old_item) -> %EcCartItem{ old_item | ec_qty: item.ec_qty } end )}
+        end
     end
   end
 end
