@@ -1,4 +1,3 @@
-
 defmodule EcCartItem do
   defstruct ec_sku: nil, ec_price: 0, ec_qty: 1, attr: %{}
   def new( ec_sku, ec_price, ec_qty, attr) do
@@ -28,5 +27,10 @@ defmodule EcCart do
         end
     end
   end
+
+  def subtotal( %EcCart{ items: items} ) do
+    Enum.reduce( items, 0, fn(x,acc) -> ( x.ec_qty * x.ec_price )+acc end)
+  end
+
 end
 
