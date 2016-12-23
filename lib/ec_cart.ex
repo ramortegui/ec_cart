@@ -1,0 +1,2 @@
+defmodule EcCart do
+end
