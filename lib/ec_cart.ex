@@ -1,18 +1,3 @@
-defmodule EcCartItem do
-  defstruct ec_sku: nil, ec_price: 0, ec_qty: 1, attr: %{}
-  def new( ec_sku, ec_price, ec_qty, attr) do
-    %EcCartItem{ ec_sku: ec_sku, ec_price: ec_price, ec_qty: ec_qty, attr: attr }
-  end
-end
-
-defmodule EcCartAdjustment do
-  defstruct name: nil, description: nil, function: nil
-  def new( name, description, function ) do
-    %EcCartAdjustment{ name: name, description: description, function: function }
-  end
-end
-
-
 defmodule EcCart do
   defstruct items: [], adjustments: []
   def new, do: %EcCart{}
