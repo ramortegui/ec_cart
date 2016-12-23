@@ -6,7 +6,7 @@ defmodule EcCartItem do
 end
 
 defmodule EcCart do
-  defstruct items: []
+  defstruct items: [], adjustments: []
   def new, do: %EcCart{}
   def addItem( %EcCart{ items: items }, %EcCartItem{} = ec_cart_item ) do
     index = Enum.find_index( items, fn(item) -> item.ec_sku == ec_cart_item.ec_sku end )
@@ -34,3 +34,12 @@ defmodule EcCart do
 
 end
 
+defmodule EcCartAdjustment do
+  defstruct name: nil, description: nil, function: nil
+  def new( name, description, function ) do
+    %EcCartAdjustment{ name: name, description: description, function: function }
+  end
+  def value(%EcCartAdjustment{} = adjustment, %EcCart{} = ec_cart ) do
+    adjustment.function.(ec_cart)
+  end
+end
