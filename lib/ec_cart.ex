@@ -5,10 +5,18 @@ defmodule EcCartItem do
   end
 end
 
+defmodule EcCartAdjustment do
+  defstruct name: nil, description: nil, function: nil
+  def new( name, description, function ) do
+    %EcCartAdjustment{ name: name, description: description, function: function }
+  end
+end
+
+
 defmodule EcCart do
   defstruct items: [], adjustments: []
   def new, do: %EcCart{}
-  def addItem( %EcCart{ items: items }, %EcCartItem{} = ec_cart_item ) do
+  def add_item( %EcCart{ items: items }, %EcCartItem{} = ec_cart_item ) do
     index = Enum.find_index( items, fn(item) -> item.ec_sku == ec_cart_item.ec_sku end )
     case index do
       nil ->
@@ -28,18 +36,25 @@ defmodule EcCart do
     end
   end
 
+  def add_adjustment( %EcCart{} =  ec_cart, %EcCartAdjustment{} = ec_cart_adjustment ) do
+    %EcCart{ec_cart | adjustments: ec_cart.adjustments++[ec_cart_adjustment] }
+  end
+
   def subtotal( %EcCart{ items: items} ) do
     Enum.reduce( items, 0, fn(x,acc) -> ( x.ec_qty * x.ec_price )+acc end)
   end
 
-end
-
-defmodule EcCartAdjustment do
-  defstruct name: nil, description: nil, function: nil
-  def new( name, description, function ) do
-    %EcCartAdjustment{ name: name, description: description, function: function }
-  end
-  def value(%EcCartAdjustment{} = adjustment, %EcCart{} = ec_cart ) do
+  def adjustment_value(%EcCart{} = ec_cart, %EcCartAdjustment{} = adjustment ) do
     adjustment.function.(ec_cart)
   end
+
+  def total( %EcCart{} = ec_cart ) do
+    subtotal = EcCart.subtotal(ec_cart)
+    adjustments = Enum.reduce(ec_cart.adjustments, 0, fn(x,acc) ->
+      adjustment_value(ec_cart, x)+acc
+    end)
+    subtotal+adjustments
+  end
+
 end
+
