@@ -2,6 +2,16 @@
 
 E-commerce cart for elixir
 
+##Instalation
+
+    - clone the repo
+    - cd ec_cart
+    - mix deps.get
+
+## Run on iex
+
+    iex -S mix
+
 ## Use as single app
 
     ec_cart = EcCart.new
