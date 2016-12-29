@@ -1,74 +1,47 @@
 defmodule EcCartServer do
+  use GenServer
 
-  #interface functions
+  def init(_) do
+    {:ok, EcCart.new }
+  end
+
+  def handle_cast({:add_item, item}, state) do
+    {:noreply, EcCart.add_item(state, item)}
+  end
+
+  def handle_cast({:add_adjustment, adjustment}, state) do
+    {:noreply, EcCart.add_adjustment(state, adjustment)}
+  end
+
+  def handle_call({:subtotal}, _, state) do
+    {:reply, EcCart.subtotal(state), state }
+  end
+
+  def handle_call({:total}, _, state) do
+    {:reply, EcCart.total(state), state }
+  end
+
   def start do
-    spawn(fn -> loop(EcCart.new) end)
-  end
- 
-  def value(ec_cart_server) do
-    send(ec_cart_server, {:value, self })
-    receive do
-      {:ec_cart, value} -> value
-     after 5000 -> {:error, :timeout}
-    end
+    GenServer.start(EcCartServer, nil)
   end
 
-  def add_item(ec_cart_server, value) do
-    send(ec_cart_server,{:add_item,value})
+  def add_item( pid, item) do
+    GenServer.cast(pid, {:add_item, item })
   end
 
-  def add_adjustment(ec_cart_server, value) do
-    send(ec_cart_server,{:add_adjustment,value})
+  def add_adjustmnet( pid, adjustment ) do
+    GenServer.cast(pid, {:add_adjustment, adjustment} )
   end
 
-  def subtotal(ec_cart_server) do
-    send(ec_cart_server, {:subtotal, self })
-    receive do
-      {:response, value} -> value
-     after 5000 -> {:error, :timeout}
-    end
+  def subtotal( pid ) do
+    GenServer.call(pid, {:subtotal})
   end
 
-  def total(ec_cart_server) do
-    send(ec_cart_server, {:total, self })
-    receive do
-      {:response, value} -> value
-     after 5000 -> {:error, :timeout}
-    end
+  def total( pid ) do
+    GenServer.call(pid, {:total})
   end
-
-  #Implementation funcitons
-  defp loop(ec_cart) do
-    new_ec_cart = receive do
-      message -> process_message(ec_cart, message)
-    end
-    loop(new_ec_cart)
-  end
-
-  defp process_message(ec_cart, {:value, caller} ) do
-    send( caller, { :ec_cart, ec_cart } )
-    ec_cart
-  end
-
-  defp process_message(ec_cart, {:add_item, new_item} ) do
-    EcCart.add_item(ec_cart, new_item)
-  end 
-
-  defp process_message(ec_cart, {:add_adjustment, new_adjustment} ) do
-    EcCart.add_adjustment(ec_cart, new_adjustment)
-  end 
-
-  defp process_message(ec_cart, {:subtotal, caller}) do
-    send(caller, {:response, EcCart.subtotal(ec_cart)})
-    ec_cart
-  end
-
-  defp process_message(ec_cart, {:total, caller}) do
-    send(caller, {:response, EcCart.total(ec_cart)})
-    ec_cart
-  end
-
 end
+
 defmodule EcCart do
   defstruct items: [], adjustments: []
   def new, do: %EcCart{}
