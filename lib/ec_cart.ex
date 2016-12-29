@@ -45,21 +45,21 @@ end
 defmodule EcCart do
   defstruct items: [], adjustments: []
   def new, do: %EcCart{}
-  def add_item( %EcCart{ items: items }, %EcCartItem{} = ec_cart_item ) do
-    index = Enum.find_index( items, fn(item) -> item.ec_sku == ec_cart_item.ec_sku end )
+  def add_item( ec_cart, %EcCartItem{} = ec_cart_item ) do
+    index = Enum.find_index( ec_cart.items, fn(item) -> item.ec_sku == ec_cart_item.ec_sku end )
     case index do
       nil ->
         case ec_cart_item.ec_qty do
-          x when x > 0 -> %EcCart{ items: items++[ec_cart_item] } 
-          _ -> %EcCart{ items: items }
+          x when x > 0 -> %EcCart{ adjustments: ec_cart.adjustments, items: ec_cart.items ++ [ec_cart_item] } 
+          _ -> ec_cart
         end
       index ->
-        item = Enum.at( items, index )
+        item = Enum.at( ec_cart.items, index )
         item = %EcCartItem{ item | ec_qty: ( item.ec_qty + ec_cart_item.ec_qty ) }
         case item.ec_qty do
-          x when x <= 0 -> %EcCart{ items: List.delete_at(items, index ) }
+          x when x <= 0 -> %EcCart{ adjustments: ec_cart.adjustments, items: List.delete_at(ec_cart.items, index ) }
           _ ->
-            %EcCart{ items: List.update_at(items, index,
+            %EcCart{ adjustments: ec_cart.adjustments, items: List.update_at(ec_cart.items, index,
               fn(old_item) -> %EcCartItem{ old_item | ec_qty: item.ec_qty } end )}
         end
     end
