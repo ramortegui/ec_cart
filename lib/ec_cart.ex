@@ -45,7 +45,7 @@ end
 defmodule EcCart do
   defstruct items: [], adjustments: []
   def new, do: %EcCart{}
-  def add_item( ec_cart, %EcCartItem{} = ec_cart_item ) do
+  def add_item( %EcCart{} = ec_cart, %EcCartItem{} = ec_cart_item ) do
     index = Enum.find_index( ec_cart.items, fn(item) -> item.ec_sku == ec_cart_item.ec_sku end )
     case index do
       nil ->
