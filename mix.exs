@@ -1,4 +1,4 @@
-defmodule EcCart.Mixfile do
+defmodule Ec.Cart.Mixfile do
   use Mix.Project
 
   def project do

@@ -1,6 +1,6 @@
-defmodule EcCartTest do
+defmodule Ec.Cart.Test do
   use ExUnit.Case
-  doctest EcCart
+  doctest Ec.Cart
 
   test "the truth" do
     assert 1 + 1 == 2
