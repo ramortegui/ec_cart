@@ -1,28 +1,28 @@
-defmodule EcCartServer do
+defmodule Ec.Cart.Server do
   use GenServer
 
   def init(_) do
-    {:ok, EcCart.new }
+    {:ok, Ec.Cart.new }
   end
 
   def handle_cast({:add_item, item}, state) do
-    {:noreply, EcCart.add_item(state, item)}
+    {:noreply, Ec.Cart.add_item(state, item)}
   end
 
   def handle_cast({:add_adjustment, adjustment}, state) do
-    {:noreply, EcCart.add_adjustment(state, adjustment)}
+    {:noreply, Ec.Cart.add_adjustment(state, adjustment)}
   end
 
   def handle_call({:subtotal}, _, state) do
-    {:reply, EcCart.subtotal(state), state }
+    {:reply, Ec.Cart.subtotal(state), state }
   end
 
   def handle_call({:total}, _, state) do
-    {:reply, EcCart.total(state), state }
+    {:reply, Ec.Cart.total(state), state }
   end
 
   def start do
-    GenServer.start(EcCartServer, nil)
+    GenServer.start(Ec.Cart.Server, nil)
   end
 
   def add_item( pid, item) do
