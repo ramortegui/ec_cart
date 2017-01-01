@@ -21,8 +21,9 @@ defmodule Ec.Cart.Server do
     {:reply, Ec.Cart.total(state), state }
   end
 
-  def start do
-    GenServer.start(Ec.Cart.Server, nil)
+  def start_link do
+    IO.puts "Starting ec_cart_server."
+    GenServer.start_link(Ec.Cart.Server, nil)
   end
 
   def add_item( pid, item) do
