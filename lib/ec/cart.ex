@@ -1,6 +1,33 @@
 defmodule Ec.Cart do
+  @moduledoc """
+    Module to handle `Ec.Cart` structures.
+  """
   defstruct items: [], adjustments: []
+
+  @doc """
+    Creates an empty %Ec.Cart{} structure, this strucure has by default 
+    and empty list of items and and empty list of adjustments
+
+    ##Example
+
+        iex> ec_cart = Ec.Cart.new
+
+        %Ec.Cart{adjustments: [], items: []}
+
+  """
   def new, do: %Ec.Cart{}
+
+  @doc """
+    Add a new item into the %Ec.Cart{} structure, if the item already exists on the
+    structure, this function will update the quantity.
+
+    ## Examples
+    
+        iex> Ec.Cart.add_item(ec_cart,%Ec.Cart.Item{ ec_sku: "SU04", ec_qty: 10, ec_price: 3 })
+
+        %Ec.Cart{adjustments: [],items: [%Ec.Cart.Item{attr: %{}, ec_price: 3, ec_qty: 10, ec_sku: "SU04"}]}
+
+  """
   def add_item( %Ec.Cart{} = ec_cart, %Ec.Cart.Item{} = ec_cart_item ) do
     index = Enum.find_index( ec_cart.items, fn(item) -> item.ec_sku == ec_cart_item.ec_sku end )
     case index do
@@ -21,18 +48,59 @@ defmodule Ec.Cart do
     end
   end
 
+
+  @doc """
+    Add and adjutmens to the adjustment list.
+
+    ## Examples
+    
+    iex> Ec.Cart.Adjustment.new("shipping","Shipping",
+
+    iex> adj = Ec.Cart.Adjustment.new("shipping","Shipping", 
+      fn(x) ->
+        sb = Ec.Cart.subtotal(x)
+        case sb do
+          sb when sb > 25 -> 0
+          _-> 10
+        end
+      end)
+    
+    iex> Ec.Cart.add_adjustment(ec_cart,adj)
+
+    %Ec.Cart{adjustments: [%Ec.Cart.Adjustment{description: "Shipping",
+       function: #Function<6.52032458/1 in :erl_eval.expr/5>, name: "shipping"}],
+        items: [%Ec.Cart.Item{attr: %{}, ec_price: 3, ec_qty: 10, ec_sku: "SU04"}]}
+
+  """
   def add_adjustment( %Ec.Cart{} =  ec_cart, %Ec.Cart.Adjustment{} = ec_cart_adjustment ) do
     %Ec.Cart{ec_cart | adjustments: ec_cart.adjustments++[ec_cart_adjustment] }
   end
 
+  @doc """
+    Calculate the sum of the result of multiply the price of each item and its quantity
+
+    iex> Ec.Cart.subtotal(ec_cart)
+
+    30
+
+  """
   def subtotal( %Ec.Cart{ items: items} ) do
     Enum.reduce( items, 0, fn(x,acc) -> ( x.ec_qty * x.ec_price )+acc end)
   end
 
-  def adjustment_value(%Ec.Cart{} = ec_cart, %Ec.Cart.Adjustment{} = adjustment ) do
+  defp adjustment_value(%Ec.Cart{} = ec_cart, %Ec.Cart.Adjustment{} = adjustment ) do
     adjustment.function.(ec_cart)
   end
 
+  @doc """
+    Calculates the total of the cart that include: subtotal + adjustments
+
+    ## Examples:
+
+    iex> Ec.Cart.total(ec_cart)
+
+    30
+  """
   def total( %Ec.Cart{} = ec_cart ) do
     subtotal = Ec.Cart.subtotal(ec_cart)
     adjustments = Enum.reduce(ec_cart.adjustments, 0, fn(x,acc) ->
@@ -40,6 +108,5 @@ defmodule Ec.Cart do
     end)
     subtotal+adjustments
   end
-
 end
 
