@@ -17,7 +17,7 @@ defmodule Ec.Cart.Mixfile do
   end
 
   defp deps do
-    []
+    [{:ex_doc, "~> 0.14", only: :dev}]
   end
 
   defp description do

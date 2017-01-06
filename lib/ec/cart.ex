@@ -10,8 +10,7 @@ defmodule Ec.Cart do
 
     ##Example
 
-        iex> ec_cart = Ec.Cart.new
-
+        iex> Ec.Cart.new
         %Ec.Cart{adjustments: [], items: []}
 
   """
@@ -23,8 +22,8 @@ defmodule Ec.Cart do
 
     ## Examples
     
+        iex> ec_cart = Ec.Cart.new
         iex> Ec.Cart.add_item(ec_cart,%Ec.Cart.Item{ ec_sku: "SU04", ec_qty: 10, ec_price: 3 })
-
         %Ec.Cart{adjustments: [],items: [%Ec.Cart.Item{attr: %{}, ec_price: 3, ec_qty: 10, ec_sku: "SU04"}]}
 
   """
@@ -53,24 +52,19 @@ defmodule Ec.Cart do
     Add and adjutmens to the adjustment list.
 
     ## Examples
-    
-    iex> Ec.Cart.Adjustment.new("shipping","Shipping",
 
-    iex> adj = Ec.Cart.Adjustment.new("shipping","Shipping", 
-      fn(x) ->
-        sb = Ec.Cart.subtotal(x)
-        case sb do
-          sb when sb > 25 -> 0
-          _-> 10
-        end
-      end)
-    
-    iex> Ec.Cart.add_adjustment(ec_cart,adj)
-
-    %Ec.Cart{adjustments: [%Ec.Cart.Adjustment{description: "Shipping",
-       function: #Function<6.52032458/1 in :erl_eval.expr/5>, name: "shipping"}],
-        items: [%Ec.Cart.Item{attr: %{}, ec_price: 3, ec_qty: 10, ec_sku: "SU04"}]}
-
+    iex> ec_cart = Ec.Cart.new
+    iex> adj = Ec.Cart.Adjustment.new(\"shipping\",\"Shipping\", 
+    ...> fn(x) -> 
+    ...> sb = Ec.Cart.subtotal(x)
+    ...>  case sb do
+    ...>    sb when sb > 25 -> 0
+    ...>    _-> 10
+    ...>   end
+    iex> end)
+    iex> ec_cart = Ec.Cart.add_adjustment(ec_cart,adj)
+    iex> length ec_cart.adjustments
+    1
   """
   def add_adjustment( %Ec.Cart{} =  ec_cart, %Ec.Cart.Adjustment{} = ec_cart_adjustment ) do
     %Ec.Cart{ec_cart | adjustments: ec_cart.adjustments++[ec_cart_adjustment] }
@@ -79,9 +73,10 @@ defmodule Ec.Cart do
   @doc """
     Calculate the sum of the result of multiply the price of each item and its quantity
 
+    iex> ec_cart = Ec.Cart.new
+    iex> ec_cart = Ec.Cart.add_item(ec_cart,%Ec.Cart.Item{ ec_sku: "SU04", ec_qty: 10, ec_price: 2 })
     iex> Ec.Cart.subtotal(ec_cart)
-
-    30
+    20
 
   """
   def subtotal( %Ec.Cart{ items: items} ) do
@@ -97,9 +92,19 @@ defmodule Ec.Cart do
 
     ## Examples:
 
+    iex> ec_cart = Ec.Cart.new
+    iex> ec_cart = Ec.Cart.add_item(ec_cart,%Ec.Cart.Item{ ec_sku: "SU04", ec_qty: 5, ec_price: 3 })
+    iex> adj = Ec.Cart.Adjustment.new("shipping","Shipping", 
+    ...> fn(x) -> 
+    ...> sb = Ec.Cart.subtotal(x)
+    ...>case sb do
+    ...>  sb when sb > 25 -> 0
+    ...>  _-> 10
+    ...>end
+    ...>end)
+    iex> ec_cart = Ec.Cart.add_adjustment(ec_cart,adj)
     iex> Ec.Cart.total(ec_cart)
-
-    30
+    25
   """
   def total( %Ec.Cart{} = ec_cart ) do
     subtotal = Ec.Cart.subtotal(ec_cart)
