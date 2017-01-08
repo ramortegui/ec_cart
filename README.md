@@ -68,6 +68,15 @@ E-commerce cart for elixir
     Ec.Cart.Server.subtotal(cart_one)
 
 
+## TODO
+
+  - Features to add:
+    * Remove adjustments.
+    * Get the result of and adjustment based on their name.
+    * Cart summary.
+    * Use Registry ( or :gproc ) to handle each ec_cart server supervision, and 
+      prevent the restart of all the services of ec_cart.
+
 ## License
 
 Copyright 2017 Ruben Amortegui
