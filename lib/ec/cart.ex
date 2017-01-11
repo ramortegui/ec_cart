@@ -20,7 +20,7 @@ defmodule Ec.Cart do
     Add a new item into the %Ec.Cart{} structure, if the item already exists on the
     structure, this function will update the quantity.
 
-    ## Examples
+    ## Example
     
         iex> ec_cart = Ec.Cart.new
         iex> Ec.Cart.add_item(ec_cart,%Ec.Cart.Item{ ec_sku: "SU04", ec_qty: 10, ec_price: 3 })
@@ -51,7 +51,7 @@ defmodule Ec.Cart do
   @doc """
     Add and adjutmens to the adjustment list.
 
-    ## Examples
+    ## Example
 
     iex> ec_cart = Ec.Cart.new
     iex> adj = Ec.Cart.Adjustment.new(\"shipping\",\"Shipping\", 
@@ -90,7 +90,7 @@ defmodule Ec.Cart do
   @doc """
     Calculates the total of the cart that include: subtotal + adjustments
 
-    ## Examples:
+    ## Example
 
     iex> ec_cart = Ec.Cart.new
     iex> ec_cart = Ec.Cart.add_item(ec_cart,%Ec.Cart.Item{ ec_sku: "SU04", ec_qty: 5, ec_price: 3 })
