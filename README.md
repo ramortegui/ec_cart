@@ -67,6 +67,18 @@ E-commerce cart for elixir
     Ec.Cart.Server.add_item(cart_one,%Ec.Cart.Item{ec_sku: "SU02", ec_price: 15})
     Ec.Cart.Server.subtotal(cart_one)
 
+### To use with Phoenix:
+  -  Add as dependency, and on applications
+  - On the lib/Project start the supervisor adding on the children list: supervisor(Ec.Cart.Supervisor, []),
+  - To see how it works, start the application on iex
+  
+      $ iex -S mix phoenix.server
+      
+      #And then start the observer.
+      
+      iex(n)>:observer.start
+        
+      #And you will see the ec_cart_cache process running as part of your app.
 
 ## TODO
 
