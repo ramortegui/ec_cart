@@ -1,8 +1,8 @@
-defmodule Ec.Cart.Supervisor do
+defmodule EcCart.Supervisor do
   use Supervisor
 
   def init(_) do
-    processes = [worker(Ec.Cart.Cache, [])]
+    processes = [worker(EcCart.Cache, [])]
     supervise(processes , strategy: :one_for_one )
   end
 

@@ -1,4 +1,4 @@
-defmodule Ec.Cart.Cache do
+defmodule EcCart.Cache do
   use GenServer
   def start_link do
     IO.puts "Starting ec_cart_cache."
@@ -18,7 +18,7 @@ defmodule Ec.Cart.Cache do
       {:ok, ec_cart_server} ->
         { :reply, ec_cart_server, ec_cart_servers }
       :error ->
-        {:ok, new_ec_cart_server} = Ec.Cart.Server.start_link
+        {:ok, new_ec_cart_server} = EcCart.Server.start_link
 
         { :reply, new_ec_cart_server, Map.put(ec_cart_servers, ec_cart_server_name, new_ec_cart_server) }
     end

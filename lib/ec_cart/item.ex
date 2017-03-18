@@ -1,6 +1,6 @@
-defmodule Ec.Cart.Item do
+defmodule EcCart.Item do
   @moduledoc """
-  Definition of the structure of an Item used by Ec.Cart
+  Definition of the structure of an Item used by EcCart
   """
   defstruct ec_sku: nil, ec_price: 0, ec_qty: 1, attr: %{}
 
@@ -16,6 +16,6 @@ defmodule Ec.Cart.Item do
     `attr` Aditional attributes that needs to be attached to the item, like description, name, etc.
   """
   def new( ec_sku, ec_price, ec_qty, attr) do
-    %Ec.Cart.Item{ ec_sku: ec_sku, ec_price: ec_price, ec_qty: ec_qty, attr: attr }
+    %EcCart.Item{ ec_sku: ec_sku, ec_price: ec_price, ec_qty: ec_qty, attr: attr }
   end
 end

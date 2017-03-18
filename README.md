@@ -1,4 +1,4 @@
-# Ec.Cart
+# EcCart
 
 E-commerce cart for elixir
 
@@ -14,62 +14,62 @@ E-commerce cart for elixir
 
 ## Use as single app
 
-    ec_cart = Ec.Cart.new
-    ec_cart = Ec.Cart.add_item(ec_cart,%Ec.Cart.Item{ ec_sku: "SU04", ec_qty: 10, ec_price: 3 })
-    adj = Ec.Cart.Adjustment.new("shipping","Shipping", 
+    ec_cart = EcCart.new
+    ec_cart = EcCart.add_item(ec_cart,%EcCart.Item{ ec_sku: "SU04", ec_qty: 10, ec_price: 3 })
+    adj = EcCart.Adjustment.new("shipping","Shipping", 
       fn(x) ->
-      sb = Ec.Cart.subtotal(x)
+      sb = EcCart.subtotal(x)
         case sb do
           sb when sb > 25 -> 0
           _-> 10
         end
     end)
-    ec_cart = Ec.Cart.add_adjustment(ec_cart,adj)
-    Ec.Cart.total(ec_cart)
+    ec_cart = EcCart.add_adjustment(ec_cart,adj)
+    EcCart.total(ec_cart)
 
 
 ## Use as server (manage multiple cart processes and their states).
 
-    {:ok, pid1} = Ec.Cart.Server.start_link
-    Ec.Cart.Server.add_item(pid1,%Ec.Cart.Item{ ec_sku: "SU01", ec_qty: 10, ec_price: 3 })
-    {:ok, pid2} = Ec.Cart.Server.start_link
-    Ec.Cart.Server.add_item(pid2,%Ec.Cart.Item{ ec_sku: "SU02", ec_qty: 5, ec_price: 3 })
-    adj = Ec.Cart.Adjustment.new("shipping","Shipping",
+    {:ok, pid1} = EcCart.Server.start_link
+    EcCart.Server.add_item(pid1,%EcCart.Item{ ec_sku: "SU01", ec_qty: 10, ec_price: 3 })
+    {:ok, pid2} = EcCart.Server.start_link
+    EcCart.Server.add_item(pid2,%EcCart.Item{ ec_sku: "SU02", ec_qty: 5, ec_price: 3 })
+    adj = EcCart.Adjustment.new("shipping","Shipping",
         fn(x) ->
-            sb = Ec.Cart.subtotal(x)
+            sb = EcCart.subtotal(x)
                 case sb do
                     sb when sb > 25 -> 0
                     _-> 10
                 end
         end)
-    Ec.Cart.Server.add_adjustment(pid1,adj)
-    Ec.Cart.Server.add_adjustment(pid2,adj)
-    Ec.Cart.Server.total(pid1)
-    Ec.Cart.Server.total(pid2)
+    EcCart.Server.add_adjustment(pid1,adj)
+    EcCart.Server.add_adjustment(pid2,adj)
+    EcCart.Server.total(pid1)
+    EcCart.Server.total(pid2)
 
 ## How to use the cache to manage multiple EcCartServers
 
-    {:ok, cache } = Ec.Cart.Cache.start_link
-    cart_one = Ec.Cart.Cache.server_process("cart one")
-    Ec.Cart.Server.add_item(cart_one,%Ec.Cart.Item{ec_sku: "SU01", ec_price: 10})
-    Ec.Cart.Server.add_item(cart_one,%Ec.Cart.Item{ec_sku: "SU02", ec_price: 15})
-    Ec.Cart.Server.subtotal(cart_one)
-    cart_two = Ec.Cart.Cache.server_process("cart two")
-    Ec.Cart.Server.add_item(cart_two,%Ec.Cart.Item{ec_sku: "SU01", ec_price: 2})
-    Ec.Cart.Server.add_item(cart_two,%Ec.Cart.Item{ec_sku: "SU03", ec_price: 1})
-    Ec.Cart.Server.subtotal(cart_two)
+    {:ok, cache } = EcCart.Cache.start_link
+    cart_one = EcCart.Cache.server_process("cart one")
+    EcCart.Server.add_item(cart_one,%EcCart.Item{ec_sku: "SU01", ec_price: 10})
+    EcCart.Server.add_item(cart_one,%EcCart.Item{ec_sku: "SU02", ec_price: 15})
+    EcCart.Server.subtotal(cart_one)
+    cart_two = EcCart.Cache.server_process("cart two")
+    EcCart.Server.add_item(cart_two,%EcCart.Item{ec_sku: "SU01", ec_price: 2})
+    EcCart.Server.add_item(cart_two,%EcCart.Item{ec_sku: "SU03", ec_price: 1})
+    EcCart.Server.subtotal(cart_two)
 
 ## How to use the supervisor as starting point.
 
-    Ec.Cart.Supervisor.start_link
-    cart_one = Ec.Cart.Cache.server_process("cart one")
-    Ec.Cart.Server.add_item(cart_one,%Ec.Cart.Item{ec_sku: "SU01", ec_price: 10})
-    Ec.Cart.Server.add_item(cart_one,%Ec.Cart.Item{ec_sku: "SU02", ec_price: 15})
-    Ec.Cart.Server.subtotal(cart_one)
+    EcCart.Supervisor.start_link
+    cart_one = EcCart.Cache.server_process("cart one")
+    EcCart.Server.add_item(cart_one,%EcCart.Item{ec_sku: "SU01", ec_price: 10})
+    EcCart.Server.add_item(cart_one,%EcCart.Item{ec_sku: "SU02", ec_price: 15})
+    EcCart.Server.subtotal(cart_one)
 
 ### To use with Phoenix:
   -  Add as dependency, and on applications
-  - On the lib/Project start the supervisor adding on the children list: supervisor(Ec.Cart.Supervisor, []),
+  - On the lib/Project start the supervisor adding on the children list: supervisor(EcCart.Supervisor, []),
   - To see how it works, start the application on iex
   
       $ iex -S mix phoenix.server
