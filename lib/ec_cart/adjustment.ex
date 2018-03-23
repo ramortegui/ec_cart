@@ -14,7 +14,7 @@ defmodule EcCart.Adjustment do
     `function` Anonymous function to be used by `EcCart`
 
   """
-  def new( name, description, function ) do
-    %EcCart.Adjustment{ name: name, description: description, function: function }
+  def new(name, description, function) do
+    %EcCart.Adjustment{name: name, description: description, function: function}
   end
 end

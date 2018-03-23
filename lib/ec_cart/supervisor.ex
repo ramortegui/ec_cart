@@ -3,7 +3,7 @@ defmodule EcCart.Supervisor do
 
   def init(_) do
     processes = [worker(EcCart.Cache, [])]
-    supervise(processes , strategy: :one_for_one )
+    supervise(processes, strategy: :one_for_one)
   end
 
   def start_link do

@@ -15,7 +15,7 @@ defmodule EcCart.Item do
 
     `attr` Aditional attributes that needs to be attached to the item, like description, name, etc.
   """
-  def new( ec_sku, ec_price, ec_qty, attr) do
-    %EcCart.Item{ ec_sku: ec_sku, ec_price: ec_price, ec_qty: ec_qty, attr: attr }
+  def new(ec_sku, ec_price, ec_qty, attr) do
+    %EcCart.Item{ec_sku: ec_sku, ec_price: ec_price, ec_qty: ec_qty, attr: attr}
   end
 end
