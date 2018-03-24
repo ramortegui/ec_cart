@@ -26,7 +26,6 @@ defmodule EcCart.Server do
     {:reply, EcCart.Cart.total(state), state}
   end
 
-
   def add_item(pid, item) do
     GenServer.cast(pid, {:add_item, item})
   end

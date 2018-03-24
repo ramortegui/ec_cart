@@ -28,7 +28,7 @@ defmodule EcCart.Cart do
 
   """
   def add_item(%EcCart.Cart{} = ec_cart, %EcCart.Item{} = ec_cart_item) do
-    %{ec_cart | items: insert_or_update_item( ec_cart.items, ec_cart_item)}
+    %{ec_cart | items: insert_or_update_item(ec_cart.items, ec_cart_item)}
   end
 
   defp insert_or_update_item(items, %EcCart.Item{ec_sku: ec_sku} = ec_cart_item) do
@@ -40,8 +40,11 @@ defmodule EcCart.Cart do
 
   defp update_items(items, %EcCart.Item{ec_sku: ec_sku} = ec_cart_item) do
     Enum.map(items, fn
-      %EcCart.Item{ec_sku: ^ec_sku} = item -> %EcCart.Item{ item | ec_qty: item.ec_qty + ec_cart_item.ec_qty}
-      _ -> ec_cart_item
+      %EcCart.Item{ec_sku: ^ec_sku} = item ->
+        %EcCart.Item{item | ec_qty: item.ec_qty + ec_cart_item.ec_qty}
+
+      _ ->
+        ec_cart_item
     end)
   end
 
@@ -119,5 +122,4 @@ defmodule EcCart.Cart do
 
     subtotal + adjustments
   end
-
 end
