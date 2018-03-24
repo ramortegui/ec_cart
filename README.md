@@ -2,7 +2,7 @@
 
 E-commerce cart for elixir
 
-##Instalation
+## Instalation
 
     - clone the repo
     - cd ec_cart
