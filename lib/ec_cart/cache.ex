@@ -21,7 +21,6 @@ defmodule EcCart.Cache do
 
       :error ->
         {:ok, new_ec_cart_server} = EcCart.Server.start_link()
-
         {:reply, new_ec_cart_server,
          Map.put(ec_cart_servers, ec_cart_server_name, new_ec_cart_server)}
     end
