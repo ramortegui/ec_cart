@@ -15,7 +15,8 @@ defmodule Ec.Cart.Mixfile do
   end
 
   def application do
-    [applications: [:logger]]
+    [applications: [:logger],
+     mod: {EcCart,[]}]
   end
 
   defp deps do

@@ -6,7 +6,7 @@ defmodule EcCart.Supervisor do
     supervise(processes, strategy: :one_for_one)
   end
 
-  def start_link do
+  def start_link(_arg) do
     Supervisor.start_link(__MODULE__, nil)
   end
 end
