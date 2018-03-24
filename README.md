@@ -12,28 +12,27 @@ E-commerce cart for elixir
 
     iex -S mix
 
-## Use as single app
+## Use to store values 
 
-    ec_cart = EcCart.new
-    ec_cart = EcCart.add_item(ec_cart,%EcCart.Item{ ec_sku: "SU04", ec_qty: 10, ec_price: 3 })
-    adj = EcCart.Adjustment.new("shipping","Shipping", 
+    ec_cart = EcCart.Cart.new
+    ec_cart = EcCart.Cart.add_item(ec_cart, %EcCart.Item{ec_sku: "SU04", ec_qty: 10, ec_price: 3})
+    adj = EcCart.Adjustment.new("shipping","Shipping",
       fn(x) ->
-      sb = EcCart.subtotal(x)
+      sb = EcCart.Cart.subtotal(x)
         case sb do
           sb when sb > 25 -> 0
           _-> 10
         end
     end)
-    ec_cart = EcCart.add_adjustment(ec_cart,adj)
-    EcCart.total(ec_cart)
-
+    ec_cart = EcCart.Cart.add_adjustment(ec_cart,adj)
+    EcCart.Cart.total(ec_cart)
 
 ## Use as server (manage multiple cart processes and their states).
 
     {:ok, pid1} = EcCart.Server.start_link
-    EcCart.Server.add_item(pid1,%EcCart.Item{ ec_sku: "SU01", ec_qty: 10, ec_price: 3 })
+    EcCart.Server.add_item(pid1, %EcCart.Item{ec_sku: "SU01", ec_qty: 10, ec_price: 3})
     {:ok, pid2} = EcCart.Server.start_link
-    EcCart.Server.add_item(pid2,%EcCart.Item{ ec_sku: "SU02", ec_qty: 5, ec_price: 3 })
+    EcCart.Server.add_item(pid2, %EcCart.Item{ec_sku: "SU02", ec_qty: 5, ec_price: 3})
     adj = EcCart.Adjustment.new("shipping","Shipping",
         fn(x) ->
             sb = EcCart.subtotal(x)
@@ -51,25 +50,24 @@ E-commerce cart for elixir
 
     {:ok, cache } = EcCart.Cache.start_link
     cart_one = EcCart.Cache.server_process("cart one")
-    EcCart.Server.add_item(cart_one,%EcCart.Item{ec_sku: "SU01", ec_price: 10})
-    EcCart.Server.add_item(cart_one,%EcCart.Item{ec_sku: "SU02", ec_price: 15})
+    EcCart.Server.add_item(cart_one, %EcCart.Item{ec_sku: "SU01", ec_price: 10})
+    EcCart.Server.add_item(cart_one, %EcCart.Item{ec_sku: "SU02", ec_price: 15})
     EcCart.Server.subtotal(cart_one)
     cart_two = EcCart.Cache.server_process("cart two")
-    EcCart.Server.add_item(cart_two,%EcCart.Item{ec_sku: "SU01", ec_price: 2})
-    EcCart.Server.add_item(cart_two,%EcCart.Item{ec_sku: "SU03", ec_price: 1})
+    EcCart.Server.add_item(cart_two, %EcCart.Item{ec_sku: "SU01", ec_price: 2})
+    EcCart.Server.add_item(cart_two, %EcCart.Item{ec_sku: "SU03", ec_price: 1})
     EcCart.Server.subtotal(cart_two)
 
 ## How to use the supervisor as starting point.
 
     EcCart.Supervisor.start_link
     cart_one = EcCart.Cache.server_process("cart one")
-    EcCart.Server.add_item(cart_one,%EcCart.Item{ec_sku: "SU01", ec_price: 10})
-    EcCart.Server.add_item(cart_one,%EcCart.Item{ec_sku: "SU02", ec_price: 15})
+    EcCart.Server.add_item(cart_one, %EcCart.Item{ec_sku: "SU01", ec_price: 10})
+    EcCart.Server.add_item(cart_one, %EcCart.Item{ec_sku: "SU02", ec_price: 15})
     EcCart.Server.subtotal(cart_one)
 
 ### To use with Phoenix:
-  -  Add as dependency, and on applications
-  - On the lib/Project start the supervisor adding on the children list: supervisor(EcCart.Supervisor, []),
+  - Add as dependency 
   - To see how it works, start the application on iex
   
       $ iex -S mix phoenix.server
@@ -78,7 +76,7 @@ E-commerce cart for elixir
       
       iex(n)>:observer.start
         
-      #And you will see the ec_cart_cache process running as part of your app.
+      #And you will see the ec_cart application aside of your app.
 
 ## TODO
 
@@ -86,12 +84,12 @@ E-commerce cart for elixir
     * Remove adjustments.
     * Get the result of and adjustment based on their name.
     * Cart summary.
-    * Use Registry ( or :gproc ) to handle each ec_cart server supervision, and 
-      prevent the restart of all the services of ec_cart.
+    * Add Dynamic supervision for each cart instead one supervision for the
+      cache
 
 ## License
 
-Copyright 2017 Ruben Amortegui
+Copyright 2018 Ruben Amortegui
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
