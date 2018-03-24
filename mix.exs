@@ -4,12 +4,12 @@ defmodule Ec.Cart.Mixfile do
   def project do
     [
       app: :ec_cart,
-      version: "0.1.4",
+      version: "0.1.3",
       elixir: "~> 1.4",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       package: package(),
-      description: "OTP cart application"),
+      description: description(),
       deps: deps()
     ]
   end
