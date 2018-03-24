@@ -28,12 +28,7 @@ defmodule EcCart do
 
   """
   def add_item(%EcCart{} = ec_cart, %EcCart.Item{} = ec_cart_item) do
-    %{ec_cart | items: add_item_in_items(ec_cart.items, ec_cart_item)}
-  end
-
-  defp add_item_in_items(items, %EcCart.Item{} = ec_cart_item) do
-    items
-    |> insert_or_update_item(ec_cart_item)
+    %{ec_cart | items: insert_or_update_item( ec_cart.items, ec_cart_item)}
   end
 
   defp insert_or_update_item(items, %EcCart.Item{ec_sku: ec_sku} = ec_cart_item) do
