@@ -5,6 +5,11 @@ defmodule EcCart.Server do
     {:ok, EcCart.new()}
   end
 
+  def start_link do
+    IO.puts("Starting ec_cart_server.")
+    GenServer.start_link(EcCart.Server, nil)
+  end
+
   def handle_cast({:add_item, item}, state) do
     {:noreply, EcCart.add_item(state, item)}
   end
@@ -21,10 +26,6 @@ defmodule EcCart.Server do
     {:reply, EcCart.total(state), state}
   end
 
-  def start_link do
-    IO.puts("Starting ec_cart_server.")
-    GenServer.start_link(EcCart.Server, nil)
-  end
 
   def add_item(pid, item) do
     GenServer.cast(pid, {:add_item, item})
