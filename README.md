@@ -1,4 +1,4 @@
-# EcCart
+# EcCart [![Build Status](https://travis-ci.org/ramortegui/ec_cart.svg?branch=master)](https://travis-ci.org/ramortegui/ec_cart)
 
 E-commerce cart for elixir
 
