@@ -10,7 +10,8 @@ defmodule Ec.Cart.Mixfile do
       start_permanent: Mix.env() == :prod,
       package: package(),
       description: description(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [plt_add_deps: :apps_direct, plt_add_apps: [:wx]]
     ]
   end
 
@@ -19,7 +20,8 @@ defmodule Ec.Cart.Mixfile do
   end
 
   defp deps do
-    [{:ex_doc, "~> 0.14", only: :dev}]
+    [{:ex_doc, "~> 0.14", only: :dev},
+     {:dialyxir, "~> 0.5", only: [:dev]}]
   end
 
   defp description do
