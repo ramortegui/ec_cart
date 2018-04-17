@@ -2,7 +2,6 @@ defmodule EcCart.Cache do
   use GenServer
 
   def start_link do
-    IO.puts("Starting ec_cart_cache.")
     GenServer.start_link(__MODULE__, nil, name: :ec_cart_cache)
   end
 
