@@ -135,7 +135,7 @@ defmodule EcCart.Cart do
       ...>  _-> 10
       ...>end
       ...>end)
-      iex> ec_cart = EcCart.Cart.add_adjustment(ec_cart,adj)
+      iex> ec_cart = EcCart.Cart.add_adjustment(ec_cart, adj)
       iex> EcCart.Cart.total(ec_cart)
       25
   """

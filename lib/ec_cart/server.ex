@@ -16,7 +16,7 @@ defmodule EcCart.Server do
   def handle_cast({:add_adjustment, adjustment}, state) do
     {:noreply, EcCart.Cart.add_adjustment(state, adjustment)}
   end
-  
+
   def handle_cast({:remove_adjustment, adjustment}, state) do
     {:noreply, EcCart.Cart.remove_adjustment(state, adjustment)}
   end
