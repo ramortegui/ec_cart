@@ -35,7 +35,7 @@ E-commerce cart for elixir
     EcCart.Server.add_item(pid2, %EcCart.Item{ec_sku: "SU02", ec_qty: 5, ec_price: 3})
     adj = EcCart.Adjustment.new("shipping","Shipping",
         fn(x) ->
-            sb = EcCart.subtotal(x)
+            sb = EcCart.Cart.subtotal(x)
                 case sb do
                     sb when sb > 25 -> 0
                     _-> 10
