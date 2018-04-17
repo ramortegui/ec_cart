@@ -53,13 +53,13 @@ defmodule EcCart.Cart do
   end
 
   @doc """
-    Add and adjutmens to the adjustment list.
+    Add adjustment to the adjustment list.
 
     ## Examples
 
         iex> ec_cart = EcCart.Cart.new
-        iex> adj = EcCart.Adjustment.new(\"shipping\",\"Shipping\", 
-        ...> fn(x) -> 
+        iex> adj = EcCart.Adjustment.new(\"shipping\",\"Shipping\",
+        ...> fn(x) ->
         ...> sb = EcCart.Cart.subtotal(x)
         ...>  case sb do
         ...>    sb when sb > 25 -> 0
@@ -72,6 +72,33 @@ defmodule EcCart.Cart do
   """
   def add_adjustment(%EcCart.Cart{} = ec_cart, %EcCart.Adjustment{} = ec_cart_adjustment) do
     %EcCart.Cart{ec_cart | adjustments: ec_cart.adjustments ++ [ec_cart_adjustment]}
+  end
+
+  @doc """
+    Remove adjustment from adjustment list.
+
+    ## Examples
+
+    iex> ec_cart = EcCart.Cart.new
+    iex> adj = EcCart.Adjustment.new(\"shipping\",\"Shipping\",
+    ...> fn(x) ->
+    ...> sb = EcCart.Cart.subtotal(x)
+    ...>  case sb do
+    ...>    sb when sb > 25 -> 0
+    ...>    _-> 10
+    ...>   end
+    iex> end)
+    iex> ec_cart = EcCart.Cart.add_adjustment(ec_cart, adj)
+    iex> length ec_cart.adjustments
+    1
+    iex> ec_cart = EcCart.Cart.remove_adjustment(ec_cart, \"shipping\")
+    iex> length ec_cart.adjustments
+    0
+  """
+
+  def remove_adjustment(%EcCart.Cart{adjustments: adjustments} = ec_cart, adj) do
+    adjustments = Enum.reject(adjustments, &(&1.name == adj))
+    %{ec_cart | adjustments: adjustments}
   end
 
   @doc """
