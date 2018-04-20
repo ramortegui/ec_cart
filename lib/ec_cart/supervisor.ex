@@ -1,7 +1,7 @@
 defmodule EcCart.Supervisor do
   use Supervisor
 
-  def start_link(_arg) do
+  def init(:ok) do
     processes = [
       EcCart.Cache,
       EcCart.ServerSupervisor
@@ -9,6 +9,10 @@ defmodule EcCart.Supervisor do
 
     opts = [strategy: :one_for_one, name: __MODULE__]
 
-    Supervisor.start_link(processes, opts)
+    Supervisor.init(processes, opts)
+  end
+
+  def start_link(_arg) do
+    Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 end

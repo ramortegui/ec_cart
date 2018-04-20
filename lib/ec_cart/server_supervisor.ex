@@ -18,4 +18,8 @@ defmodule EcCart.ServerSupervisor do
 
     DynamicSupervisor.start_child(__MODULE__, child_spec)
   end
+
+  def remove_cart(pid) do
+    DynamicSupervisor.terminate_child(__MODULE__, pid)
+  end
 end
