@@ -32,7 +32,8 @@ defmodule EcCart.Cache do
     case Map.fetch(ec_cart_servers, ec_cart_name) do
       {:ok, ec_cart_server} ->
         EcCart.ServerSupervisor.remove_cart(ec_cart_server)
-        {:noreply, Map.delete(ec_cart_servers, ec_cart_name)}
+        new_cart_servers = Map.delete(ec_cart_servers, ec_cart_name)
+        {:noreply, new_cart_servers}
 
       :error ->
         {:noreply, ec_cart_servers, ec_cart_servers}
