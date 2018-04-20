@@ -6,7 +6,6 @@ defmodule EcCart.Server do
   end
 
   def start_link do
-    IO.puts("Starting ec_cart_server.")
     GenServer.start_link(EcCart.Server, nil)
   end
 
@@ -16,6 +15,10 @@ defmodule EcCart.Server do
 
   def handle_cast({:add_adjustment, adjustment}, state) do
     {:noreply, EcCart.Cart.add_adjustment(state, adjustment)}
+  end
+
+  def handle_cast({:remove_adjustment, adjustment}, state) do
+    {:noreply, EcCart.Cart.remove_adjustment(state, adjustment)}
   end
 
   def handle_call({:subtotal}, _, state) do
@@ -32,6 +35,10 @@ defmodule EcCart.Server do
 
   def add_adjustment(pid, adjustment) do
     GenServer.cast(pid, {:add_adjustment, adjustment})
+  end
+
+  def remove_adjustment(pid, adjustment) do
+    GenServer.cast(pid, {:remove_adjustment, adjustment})
   end
 
   def subtotal(pid) do
