@@ -83,13 +83,13 @@ E-commerce cart for elixir
   - Features to add:
     * Remove adjustments.
     * Get the result of and adjustment based on their name.
-    * Cart summary.
     * Add Dynamic supervision for each cart instead one supervision for the
       cache
 
 ## License
 
 Copyright 2022 Jason Clark
+Copyright 2018 Ruben Amortegui
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
