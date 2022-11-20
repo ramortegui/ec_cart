@@ -1,10 +1,10 @@
-defmodule EcCart.Supervisor do
+defmodule ExCart.Supervisor do
   use Supervisor
 
   def init(:ok) do
     processes = [
-      EcCart.Cache,
-      EcCart.ServerSupervisor
+      ExCart.Cache,
+      ExCart.ServerSupervisor
     ]
 
     opts = [strategy: :one_for_one, name: __MODULE__]

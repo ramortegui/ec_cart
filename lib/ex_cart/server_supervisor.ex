@@ -1,4 +1,4 @@
-defmodule EcCart.ServerSupervisor do
+defmodule ExCart.ServerSupervisor do
   use DynamicSupervisor
 
   def init(:ok) do
@@ -11,8 +11,8 @@ defmodule EcCart.ServerSupervisor do
 
   def start_cart do
     child_spec = %{
-      id: EcCart.Server,
-      start: {EcCart.Server, :start_link, []},
+      id: ExCart.Server,
+      start: {ExCart.Server, :start_link, []},
       restart: :transient
     }
 

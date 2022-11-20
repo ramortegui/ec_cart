@@ -1,9 +1,9 @@
-defmodule EcCart do
+defmodule ExCart do
   use Application
 
   def start(_type, _args) do
     children = [
-      EcCart.Supervisor
+      ExCart.Supervisor
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one)

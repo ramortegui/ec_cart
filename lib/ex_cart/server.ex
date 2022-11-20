@@ -1,32 +1,32 @@
-defmodule EcCart.Server do
+defmodule ExCart.Server do
   use GenServer
 
   def init(_) do
-    {:ok, EcCart.Cart.new()}
+    {:ok, ExCart.Cart.new()}
   end
 
   def start_link do
-    GenServer.start_link(EcCart.Server, nil)
+    GenServer.start_link(ExCart.Server, nil)
   end
 
   def handle_cast({:add_item, item}, state) do
-    {:noreply, EcCart.Cart.add_item(state, item)}
+    {:noreply, ExCart.Cart.add_item(state, item)}
   end
 
   def handle_cast({:add_adjustment, adjustment}, state) do
-    {:noreply, EcCart.Cart.add_adjustment(state, adjustment)}
+    {:noreply, ExCart.Cart.add_adjustment(state, adjustment)}
   end
 
   def handle_cast({:remove_adjustment, adjustment}, state) do
-    {:noreply, EcCart.Cart.remove_adjustment(state, adjustment)}
+    {:noreply, ExCart.Cart.remove_adjustment(state, adjustment)}
   end
 
   def handle_call({:subtotal}, _, state) do
-    {:reply, EcCart.Cart.subtotal(state), state}
+    {:reply, ExCart.Cart.subtotal(state), state}
   end
 
   def handle_call({:total}, _, state) do
-    {:reply, EcCart.Cart.total(state), state}
+    {:reply, ExCart.Cart.total(state), state}
   end
 
   def add_item(pid, item) do
