@@ -1,4 +1,4 @@
-defmodule ExCart do
+defmodule ExCart.Application do
   use Application
 
   def start(_type, _args) do

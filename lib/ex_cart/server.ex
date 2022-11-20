@@ -29,6 +29,10 @@ defmodule ExCart.Server do
     {:reply, ExCart.Cart.total(state), state}
   end
 
+  def handle_call({:state}, _, state) do
+    {:reply, state, state}
+  end
+
   def add_item(pid, item) do
     GenServer.cast(pid, {:add_item, item})
   end
@@ -47,5 +51,9 @@ defmodule ExCart.Server do
 
   def total(pid) do
     GenServer.call(pid, {:total})
+  end
+
+  def state(pid) do
+    GenServer.call(pid, {:state})
   end
 end

@@ -4,7 +4,7 @@ defmodule ExCart.Mixfile do
   def project do
     [
       app: :ex_cart,
-      version: "0.1.5",
+      version: "1.0.0",
       elixir: "~> 1.6",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -15,7 +15,7 @@ defmodule ExCart.Mixfile do
   end
 
   def application do
-    [applications: [:logger], mod: {ExCart, []}]
+    [applications: [:logger], mod: {ExCart.Application, []}]
   end
 
   defp deps do
@@ -33,7 +33,7 @@ defmodule ExCart.Mixfile do
   defp package do
     # These are the default files included in the package
     [
-      name: :ec_cart,
+      name: :ex_cart,
       files: ["lib", "mix.exs", "README*"],
       maintainers: ["Jason Clark"],
       licenses: ["Apache 2.0"],
