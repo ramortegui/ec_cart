@@ -53,6 +53,21 @@ defmodule ExCart.Cart do
   end
 
   @doc """
+    Clear items from the Cart.
+  """
+  def clear_items(%ExCart.Cart{items: items} = ex_cart) do
+    %{ex_cart | items: []}
+  end
+
+  @doc """
+    Clear the Cart.
+  """
+  def clear(%ExCart.Cart{items: items} = ex_cart) do
+    cart = %{ex_cart | items: []}
+    %{cart | adjustments: []}
+  end
+
+  @doc """
     Add adjustment to the adjustment list.
 
     ## Examples
@@ -99,6 +114,13 @@ defmodule ExCart.Cart do
   def remove_adjustment(%ExCart.Cart{adjustments: adjustments} = ex_cart, adj) do
     adjustments = Enum.reject(adjustments, &(&1.name == adj))
     %{ex_cart | adjustments: adjustments}
+  end
+
+  @doc """
+    Clear adjustments from the Cart.
+  """
+  def clear_adjustments(%ExCart.Cart{adjustments: adjustments} = ex_cart) do
+    %{ex_cart | adjustments: []}
   end
 
   @doc """
