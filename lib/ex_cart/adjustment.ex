@@ -1,4 +1,4 @@
-defmodule EcCart.Adjustment do
+defmodule ExCart.Adjustment do
   @moduledoc """
   Definition of the structure of an adjustment.
   """
@@ -11,10 +11,10 @@ defmodule EcCart.Adjustment do
 
     `description` Description of the adjustment
 
-    `function` Anonymous function to be used by `EcCart`
+    `function` Anonymous function to be used by `ExCart`
 
   """
   def new(name, description, function) do
-    %EcCart.Adjustment{name: name, description: description, function: function}
+    %ExCart.Adjustment{name: name, description: description, function: function}
   end
 end
