@@ -129,7 +129,8 @@ defmodule ExCart.Cart do
         %ExCart.Adjustment{name: name} = ex_cart_adjustment
       ) do
     adjustment = Enum.reject(adjustments, &(&1.name == name))
-    result = {:ok, adjustment}
+    adjustment_result = adjustment_result(ex_cart, adjustment)
+    {:ok, adjustment_result}
   end
 
   @doc """
@@ -156,6 +157,16 @@ defmodule ExCart.Cart do
 
   defp adjustment_value(%ExCart.Cart{} = ex_cart, %ExCart.Adjustment{} = adjustment) do
     adjustment.function.(ex_cart)
+  end
+
+  defp adjustment_result(%ExCart.Cart{} = ex_cart, adjustment) do
+    subtotal = ExCart.Cart.subtotal(ex_cart)
+
+    adjustment_value = adjustment_value(ex_cart, adjustment)
+
+    adjustment = Map.put(adjustment, :adjustment_value, adjustment_value)
+
+    {:ok, %{subtotal: subtotal, adjustment: adjustment}}
   end
 
   @doc """
@@ -186,15 +197,5 @@ defmodule ExCart.Cart do
       end)
 
     subtotal + adjustments
-  end
-
-  def total(%ExCart.Cart{} = ex_cart, adjustment) do
-    subtotal = ExCart.Cart.subtotal(ex_cart)
-
-    adjustment_value = adjustment_value(ex_cart, adjustment)
-
-    adjustment = Map.put(adjustment, :adjustment_value, adjustment_value)
-
-    {:ok, %{subtotal: subtotal, adjustment: adjustment}}
   end
 end
