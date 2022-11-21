@@ -60,7 +60,7 @@ E-commerce cart for elixir
 
 ## How to use the Dynamic Supervised ExCartServers
 
-{:ok, pid } = ExCart.ServerSupervisor.start_cart()
+    {:ok, pid } = ExCart.ServerSupervisor.start_cart()
     ExCart.Server.state(pid)
 
 ## How to use the supervisor as starting point.
