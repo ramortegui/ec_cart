@@ -58,6 +58,11 @@ E-commerce cart for elixir
     ExCart.Server.add_item(cart_two, %ExCart.Item{ec_sku: "SU03", ec_price: 1})
     ExCart.Server.subtotal(cart_two)
 
+## How to use the Dynamic Supervised ExCartServers
+
+{:ok, pid } = ExCart.ServerSupervisor.start_cart()
+    ExCart.Server.state(pid)
+
 ## How to use the supervisor as starting point.
 
     ExCart.Supervisor.start_link
@@ -77,12 +82,6 @@ E-commerce cart for elixir
       iex(n)>:observer.start
         
       #And you will see the ex_cart application aside of your app.
-
-## TODO
-
-  - Features to add:
-    * Add Dynamic supervision for each cart instead one supervision for the
-      cache
 
 ## License
 

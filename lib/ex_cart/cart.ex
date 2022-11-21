@@ -23,33 +23,33 @@ defmodule ExCart.Cart do
     ## Examples
     
         iex> ex_cart = ExCart.Cart.new
-        iex> ExCart.Cart.add_item(ex_cart,%ExCart.Item{ ec_sku: "SU04", ec_qty: 10, ec_price: 3 })
-        %ExCart.Cart{adjustments: [],items: [%ExCart.Item{attr: %{}, ec_price: 3, ec_qty: 10, ec_sku: "SU04"}]}
+        iex> ExCart.Cart.add_item(ex_cart,%ExCart.Item{ sku: "SU04", qty: 10, price: 3 })
+        %ExCart.Cart{adjustments: [],items: [%ExCart.Item{attr: %{}, price: 3, qty: 10, sku: "SU04"}]}
 
   """
   def add_item(%ExCart.Cart{} = ex_cart, %ExCart.Item{} = ex_cart_item) do
     %{ex_cart | items: insert_or_update_item(ex_cart.items, ex_cart_item)}
   end
 
-  defp insert_or_update_item(items, %ExCart.Item{ec_sku: ec_sku} = ex_cart_item) do
-    case item_in_cart(items, ec_sku) do
+  defp insert_or_update_item(items, %ExCart.Item{sku: sku} = ex_cart_item) do
+    case item_in_cart(items, sku) do
       [] -> items ++ [ex_cart_item]
       [_] -> update_items(items, ex_cart_item)
     end
   end
 
-  defp update_items(items, %ExCart.Item{ec_sku: ec_sku} = ex_cart_item) do
+  defp update_items(items, %ExCart.Item{sku: sku} = cart_item) do
     Enum.map(items, fn
-      %ExCart.Item{ec_sku: ^ec_sku} = item ->
-        %ExCart.Item{item | ec_qty: item.ec_qty + ex_cart_item.ec_qty}
+      %ExCart.Item{sku: ^sku} = item ->
+        %ExCart.Item{item | qty: item.qty + cart_item.qty}
 
       _ ->
-        ex_cart_item
+        cart_item
     end)
   end
 
-  defp item_in_cart(items, ec_sku) do
-    Enum.filter(items, fn item -> item.ec_sku == ec_sku end)
+  defp item_in_cart(items, sku) do
+    Enum.filter(items, fn item -> item.sku == sku end)
   end
 
   @doc """
@@ -116,6 +116,9 @@ defmodule ExCart.Cart do
     %{ex_cart | adjustments: adjustments}
   end
 
+  @doc """
+    Get the Adjustment.
+  """
   def get_adjustment(
         %ExCart.Cart{adjustments: adjustments} = ex_cart,
         %ExCart.Adjustment{name: name} = ex_cart_adjustment
@@ -124,6 +127,9 @@ defmodule ExCart.Cart do
     {:ok, adjustment}
   end
 
+  @doc """
+    Get the Adjustment Result.
+  """
   def get_adjustment_result(
         %ExCart.Cart{adjustments: adjustments} = ex_cart,
         %ExCart.Adjustment{name: name} = ex_cart_adjustment
@@ -146,7 +152,7 @@ defmodule ExCart.Cart do
     ## Examples
 
         iex> ex_cart = ExCart.Cart.new
-        iex> ex_cart = ExCart.Cart.add_item(ex_cart,%ExCart.Item{ ec_sku: "SU04", ec_qty: 10, ec_price: 2 })
+        iex> ex_cart = ExCart.Cart.add_item(ex_cart,%ExCart.Item{ sku: "SU04", qty: 10, price: 2 })
         iex> ExCart.Cart.subtotal(ex_cart)
         20
 
@@ -175,7 +181,7 @@ defmodule ExCart.Cart do
     ## Examples
 
       iex> ex_cart = ExCart.Cart.new
-      iex> ex_cart = ExCart.Cart.add_item(ex_cart,%ExCart.Item{ ec_sku: "SU04", ec_qty: 5, ec_price: 3 })
+      iex> ex_cart = ExCart.Cart.add_item(ex_cart,%ExCart.Item{ sku: "SU04", qty: 5, price: 3 })
       iex> adj = ExCart.Adjustment.new("shipping","Shipping",
       ...> fn(x) -> 
       ...> sb = ExCart.Cart.subtotal(x)
