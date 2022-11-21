@@ -116,6 +116,22 @@ defmodule ExCart.Cart do
     %{ex_cart | adjustments: adjustments}
   end
 
+  def get_adjustment(
+        %ExCart.Cart{adjustments: adjustments} = ex_cart,
+        %ExCart.Adjustment{name: name} = ex_cart_adjustment
+      ) do
+    adjustment = Enum.reject(adjustments, &(&1.name == name))
+    {:ok, adjustment}
+  end
+
+  def get_adjustment_result(
+        %ExCart.Cart{adjustments: adjustments} = ex_cart,
+        %ExCart.Adjustment{name: name} = ex_cart_adjustment
+      ) do
+    adjustment = Enum.reject(adjustments, &(&1.name == name))
+    result = {:ok, adjustment}
+  end
+
   @doc """
     Clear adjustments from the Cart.
   """
@@ -170,5 +186,15 @@ defmodule ExCart.Cart do
       end)
 
     subtotal + adjustments
+  end
+
+  def total(%ExCart.Cart{} = ex_cart, adjustment) do
+    subtotal = ExCart.Cart.subtotal(ex_cart)
+
+    adjustment_value = adjustment_value(ex_cart, adjustment)
+
+    adjustment = Map.put(adjustment, :adjustment_value, adjustment_value)
+
+    {:ok, %{subtotal: subtotal, adjustment: adjustment}}
   end
 end
