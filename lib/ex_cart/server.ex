@@ -60,4 +60,11 @@ defmodule ExCart.Server do
   def clear(pid) do
     GenServer.call(pid, {:clear})
   end
+
+  def clear_items(pid) do
+    GenServer.call(pid, {:clear_items})
+  end
+  def clear_adjustments(pid) do
+    GenServer.call(pid, {:clear_adjustments})
+  end
 end
