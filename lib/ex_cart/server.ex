@@ -13,12 +13,20 @@ defmodule ExCart.Server do
     {:noreply, ExCart.Cart.add_item(state, item)}
   end
 
+  def handle_cast(:clear_items, state) do
+    {:noreply, ExCart.Cart.clear_items(state)}
+  end
+
   def handle_cast({:add_adjustment, adjustment}, state) do
     {:noreply, ExCart.Cart.add_adjustment(state, adjustment)}
   end
 
   def handle_cast({:remove_adjustment, adjustment}, state) do
     {:noreply, ExCart.Cart.remove_adjustment(state, adjustment)}
+  end
+
+  def handle_cast(:clear_adjustments, state) do
+    {:noreply, ExCart.Cart.clear_adjustments(state)}
   end
 
   def handle_call({:subtotal}, _, state) do
@@ -64,6 +72,7 @@ defmodule ExCart.Server do
   def clear_items(pid) do
     GenServer.call(pid, {:clear_items})
   end
+
   def clear_adjustments(pid) do
     GenServer.call(pid, {:clear_adjustments})
   end
