@@ -10,11 +10,11 @@ require Mix.Config
 
 # You can configure for your application as:
 #
-#     config :ec_cart, key: :value
+#     config :ex_cart, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:ec_cart, :key)
+#     Application.get_env(:ex_cart, :key)
 #
 # Or configure a 3rd-party app:
 #
