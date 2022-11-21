@@ -13,7 +13,7 @@ defmodule ExCart.Server do
     {:noreply, ExCart.Cart.add_item(state, item)}
   end
 
-  def handle_cast(:clear_items, state) do
+  def handle_cast({:clear_items}, state) do
     {:noreply, ExCart.Cart.clear_items(state)}
   end
 
@@ -25,7 +25,7 @@ defmodule ExCart.Server do
     {:noreply, ExCart.Cart.remove_adjustment(state, adjustment)}
   end
 
-  def handle_cast(:clear_adjustments, state) do
+  def handle_cast({:clear_adjustments}, state) do
     {:noreply, ExCart.Cart.clear_adjustments(state)}
   end
 
