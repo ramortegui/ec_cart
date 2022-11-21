@@ -56,4 +56,8 @@ defmodule ExCart.Server do
   def state(pid) do
     GenServer.call(pid, {:state})
   end
+
+  def clear(pid) do
+    GenServer.call(pid, {:clear})
+  end
 end
