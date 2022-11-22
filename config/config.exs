@@ -10,7 +10,7 @@ require Mix.Config
 
 # You can configure for your application as:
 #
-#     config :ex_cart, key: :value
+#     config :ex_cart, max_items: 100
 #
 # And access this configuration in your application as:
 #

@@ -83,6 +83,9 @@ E-commerce cart for elixir
         
       #And you will see the ex_cart application aside of your app.
 
+## Settings (config.exs)
+  - config :ex_cart, max_items: 1000 
+
 ## License
 
 Copyright 2022 Jason Clark

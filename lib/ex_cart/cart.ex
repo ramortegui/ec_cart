@@ -4,6 +4,8 @@ defmodule ExCart.Cart do
   """
   defstruct items: [], adjustments: []
 
+  @max_items Application.get_env(:ex_cart, :max_items, 1000)
+
   @doc """
     Creates an empty %ExCart.Cart{} structure, this strucure has by default
     and empty list of items and and empty list of adjustments
@@ -33,19 +35,31 @@ defmodule ExCart.Cart do
 
   defp insert_or_update_item(items, %ExCart.Item{sku: sku} = cart_item) do
     case item_in_cart(items, sku) do
-      [] -> items ++ [cart_item]
-      [_] -> update_items(items, cart_item)
+      [] ->
+        if Enum.count(items) < @max_items do
+          items ++ [cart_item]
+        else
+          items
+        end
+
+      [_] ->
+        update_items(items, cart_item)
     end
   end
 
   defp update_items(items, %ExCart.Item{sku: sku} = cart_item) do
-    Enum.map(items, fn
-      %ExCart.Item{sku: ^sku} = item ->
-        %ExCart.Item{item | qty: item.qty + cart_item.qty}
+    items =
+      Enum.map(items, fn
+        %ExCart.Item{sku: ^sku} = item ->
+          %ExCart.Item{item | qty: item.qty + cart_item.qty}
 
-      _ ->
-        cart_item
-    end)
+        _ ->
+          cart_item
+      end)
+
+    if Enum.count(items) > @max_items do
+      Enum.pop(items)
+    end
   end
 
   defp item_in_cart(items, sku) do
