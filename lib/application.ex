@@ -8,4 +8,7 @@ defmodule ExCart.Application do
 
     Supervisor.start_link(children, strategy: :one_for_one)
   end
+
+  @version Mix.Project.config()[:version]
+  def version, do: @version
 end

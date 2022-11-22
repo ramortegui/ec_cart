@@ -1,10 +1,12 @@
 defmodule ExCart.Mixfile do
   use Mix.Project
 
+  @version "1.0.0"
+
   def project do
     [
       app: :ex_cart,
-      version: "1.0.0",
+      version: @version,
       elixir: "~> 1.6",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
