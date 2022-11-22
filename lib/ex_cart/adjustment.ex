@@ -7,6 +7,8 @@ defmodule ExCart.Adjustment do
   @doc """
     Creates a structure based on:
     
+    `id`  Id of the adjustment
+
     `name`  Name of the adjustment
 
     `description` Description of the adjustment
