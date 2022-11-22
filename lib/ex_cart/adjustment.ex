@@ -16,8 +16,17 @@ defmodule ExCart.Adjustment do
     `function` Anonymous function to be used by `ExCart`
 
   """
-  def new(name, description, function, type \\ nil) do
-    id = Nanoid.generate()
-    %ExCart.Adjustment{id: id, name: name, description: description, type: type, function: function}
+  def new(name, description, function, type \\ nil, id \\ nil) do
+    if(is_nil(id)) do
+      id = Nanoid.generate()
+    end
+
+    %ExCart.Adjustment{
+      id: id,
+      name: name,
+      description: description,
+      type: type,
+      function: function
+    }
   end
 end
