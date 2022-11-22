@@ -2,6 +2,7 @@ defmodule ExCart.Cart do
   @moduledoc """
     Module to handle `ExCart` structures.
   """
+
   defstruct items: [], adjustments: []
 
   @max_items Application.get_env(:ex_cart, :max_items, 1000)
