@@ -2,7 +2,7 @@ defmodule ExCart.Adjustment do
   @moduledoc """
   Definition of the structure of an adjustment.
   """
-  defstruct name: nil, description: nil, function: nil, type: nil
+  defstruct id: nil, name: nil, description: nil, function: nil, type: nil
 
   @doc """
     Creates a structure based on:
@@ -16,7 +16,8 @@ defmodule ExCart.Adjustment do
     `function` Anonymous function to be used by `ExCart`
 
   """
-  def new(name, description, function, type: nil) do
-    %ExCart.Adjustment{name: name, description: description, type: type, function: function}
+  def new(name, description, function, type \\ nil) do
+    id = Nanoid.generate()
+    %ExCart.Adjustment{id: id, name: name, description: description, type: type, function: function}
   end
 end

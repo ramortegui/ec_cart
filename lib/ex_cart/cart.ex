@@ -59,7 +59,8 @@ defmodule ExCart.Cart do
       end)
 
     if Enum.count(items) > @max_items do
-      Enum.pop(items)
+      {_, updated_items} = List.pop_at(items, -1)
+      updated_items
     end
   end
 
