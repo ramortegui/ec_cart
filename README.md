@@ -14,8 +14,8 @@ E-commerce cart for elixir
 
 ## Use to store values 
 
-    ec_cart = ExCart.Cart.new
-    ec_cart = ExCart.Cart.add_item(ec_cart, %ExCart.Item{ec_sku: "SU04", ec_qty: 10, ec_price: 3})
+    ex_cart = ExCart.Cart.new
+    ex_cart = ExCart.Cart.add_item(ex_cart, %ExCart.Item{ec_sku: "SU04", ec_qty: 10, ec_price: 3})
     adj = ExCart.Adjustment.new("shipping","Shipping",
       fn(x) ->
       sb = ExCart.Cart.subtotal(x)
@@ -24,8 +24,8 @@ E-commerce cart for elixir
           _-> 10
         end
     end)
-    ec_cart = ExCart.Cart.add_adjustment(ec_cart,adj)
-    ExCart.Cart.total(ec_cart)
+    ex_cart = ExCart.Cart.add_adjustment(ex_cart,adj)
+    ExCart.Cart.total(ex_cart)
 
 ## Use as server (manage multiple cart processes and their states).
 
@@ -46,27 +46,28 @@ E-commerce cart for elixir
     ExCart.Server.total(pid1)
     ExCart.Server.total(pid2)
 
-## How to use the cache to manage multiple ExCartServers
+## How to use the registry to manage multiple ExCartServers
 
-    {:ok, cache } = ExCart.Cache.start_link
-    cart_one = ExCart.Cache.server_process("cart one")
+    {:ok, session } = ExCart.Session.start_link
+    cart_one = ExCart.Session.server_process("cart one")
     ExCart.Server.add_item(cart_one, %ExCart.Item{ec_sku: "SU01", ec_price: 10})
     ExCart.Server.add_item(cart_one, %ExCart.Item{ec_sku: "SU02", ec_price: 15})
     ExCart.Server.subtotal(cart_one)
-    cart_two = ExCart.Cache.server_process("cart two")
+
+    cart_two = ExCart.Session.server_process("cart two")
     ExCart.Server.add_item(cart_two, %ExCart.Item{ec_sku: "SU01", ec_price: 2})
     ExCart.Server.add_item(cart_two, %ExCart.Item{ec_sku: "SU03", ec_price: 1})
     ExCart.Server.subtotal(cart_two)
 
 ## How to use the Dynamic Supervised ExCartServers
 
-    {:ok, pid } = ExCart.ServerSupervisor.start_cart()
+    {:ok, pid } = ExCart.Cart.Supervisor.start_cart()
     ExCart.Server.state(pid)
 
 ## How to use the supervisor as starting point.
 
     ExCart.Supervisor.start_link
-    cart_one = ExCart.Cache.server_process("cart one")
+    cart_one = ExCart.Session.server_process("cart one")
     ExCart.Server.add_item(cart_one, %ExCart.Item{ec_sku: "SU01", ec_price: 10})
     ExCart.Server.add_item(cart_one, %ExCart.Item{ec_sku: "SU02", ec_price: 15})
     ExCart.Server.subtotal(cart_one)

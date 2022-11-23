@@ -1,6 +1,8 @@
 defmodule ExCart.Cart.Supervisor do
   use DynamicSupervisor
 
+  @name __MODULE__
+
   def init(:ok) do
     DynamicSupervisor.init(strategy: :one_for_one)
   end
@@ -13,7 +15,7 @@ defmodule ExCart.Cart.Supervisor do
   end
 
   def start_link(_args) do
-    DynamicSupervisor.start_link(__MODULE__, :ok, name: __MODULE__)
+    DynamicSupervisor.start_link(__MODULE__, :ok, name: @name)
   end
 
   def start_cart do

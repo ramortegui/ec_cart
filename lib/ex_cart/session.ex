@@ -1,7 +1,7 @@
-defmodule ExCart.Registry do
+defmodule ExCart.Session do
   @moduledoc false
 
-  @name :ex_cart_registry
+  @name :ex_cart_sessions
 
   def child_spec([]) do
     %{
@@ -58,5 +58,17 @@ defmodule ExCart.Registry do
       [] -> :not_found
       [{pid, nil}] -> {:ok, pid}
     end
+  end
+
+  def server_process(name) do
+    via_tuple(name)
+  end
+
+  def remove_process(name) do
+    Registry.unregister(@registry_name, name)
+  end
+
+  def via_tuple(name, registry \\ @registry_name) do
+    {:via, Registry, {registry, name}}
   end
 end

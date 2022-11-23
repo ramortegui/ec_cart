@@ -1,15 +1,17 @@
 defmodule ExCart.Application do
   use Application
 
+  @name __MODULE__
+
   def start(_type, _args) do
     children = [
-      ExCart.Registry,
-      {DynamicSupervisor, strategy: :one_for_one, name: ExCart.Cart.Supervisor}
+      ExCart.Session,
+      {DynamicSupervisor, strategy: :one_for_one, name: :ex_cart_supervisor}
     ]
 
     opts = [
       strategy: :one_for_one,
-      name: ExCart.Supervisor
+      name: @name
     ]
 
     Supervisor.start_link(children, opts)
