@@ -23,7 +23,7 @@ defmodule ExCart.Cache do
         {:reply, ex_cart_server, ex_cart_servers}
 
       :error ->
-        {:ok, ex_cart_server} = ExCart.ServerSupervisor.start_cart()
+        {:ok, ex_cart_server} = ExCart.Cart.Supervisor.start_cart()
         {:reply, ex_cart_server, Map.put(ex_cart_servers, ex_cart_name, ex_cart_server)}
     end
   end
@@ -31,7 +31,7 @@ defmodule ExCart.Cache do
   def handle_cast({:remove_process, ex_cart_name}, ex_cart_servers) do
     case Map.fetch(ex_cart_servers, ex_cart_name) do
       {:ok, ex_cart_server} ->
-        ExCart.ServerSupervisor.remove_cart(ex_cart_server)
+        ExCart.Cart.Supervisor.remove_cart(ex_cart_server)
         new_cart_servers = Map.delete(ex_cart_servers, ex_cart_name)
         {:noreply, new_cart_servers}
 

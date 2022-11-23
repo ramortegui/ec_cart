@@ -3,10 +3,16 @@ defmodule ExCart.Application do
 
   def start(_type, _args) do
     children = [
-      ExCart.Supervisor
+      ExCart.Cache,
+      {DynamicSupervisor, strategy: :one_for_one, name: ExCart.Cart.Supervisor}
     ]
 
-    Supervisor.start_link(children, strategy: :one_for_one)
+    opts = [
+      strategy: :one_for_one,
+      name: ExCart.Supervisor
+    ]
+
+    Supervisor.start_link(children, opts)
   end
 
   @version Mix.Project.config()[:version]

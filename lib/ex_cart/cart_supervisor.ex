@@ -1,8 +1,15 @@
-defmodule ExCart.ServerSupervisor do
+defmodule ExCart.Cart.Supervisor do
   use DynamicSupervisor
 
   def init(:ok) do
     DynamicSupervisor.init(strategy: :one_for_one)
+  end
+
+  def init(args) do
+    DynamicSupervisor.init(
+      strategy: :one_for_one,
+      extra_arguments: args
+    )
   end
 
   def start_link(_args) do

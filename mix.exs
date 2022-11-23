@@ -17,7 +17,7 @@ defmodule ExCart.Mixfile do
   end
 
   def application do
-    [applications: [:logger], mod: {ExCart.Application, []}]
+    [applications: [:logger, :nanoid], mod: {ExCart.Application, []}]
   end
 
   defp deps do
