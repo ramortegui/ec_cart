@@ -3,7 +3,7 @@ defmodule ExCart.Application do
 
   def start(_type, _args) do
     children = [
-      ExCart.Cache,
+      ExCart.Registry,
       {DynamicSupervisor, strategy: :one_for_one, name: ExCart.Cart.Supervisor}
     ]
 

@@ -203,14 +203,13 @@ defmodule ExCart.Macros do
   defmodule Item do
     defmacro __using__(opts) do
       quote do
+        defstruct sku: nil, price: 0, qty: 1, attr: %{}
 
-      defstruct sku: nil, price: 0, qty: 1, attr: %{}
-
-      def new(sku, price, qty, attr) do
-        %ExCart.Item{sku: sku, price: price, qty: qty, attr: attr}
+        def new(sku, price, qty, attr) do
+          %ExCart.Item{sku: sku, price: price, qty: qty, attr: attr}
+        end
       end
     end
-  end
   end
 
   defmodule Adjustment do
