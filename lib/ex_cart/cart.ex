@@ -5,10 +5,10 @@ defmodule ExCart.Cart do
 
   defstruct items: [], adjustments: []
 
-  @max_items Application.get_env(:ex_cart, :max_items, 1000)
+  @max_items Application.compile_env(:ex_cart, :max_items, 1000)
 
   @doc """
-    Creates an empty %ExCart.Cart{} structure, this strucure has by default
+    Creates an empty %ExCart.Cart{} structure, this structure has by default
     and empty list of items and and empty list of adjustments
 
     ## Examples
@@ -24,7 +24,7 @@ defmodule ExCart.Cart do
     structure, this function will update the quantity.
 
     ## Examples
-    
+
         iex> ex_cart = ExCart.Cart.new
         iex> ExCart.Cart.add_item(ex_cart,%ExCart.Item{ sku: "SU04", qty: 10, price: 3 })
         %ExCart.Cart{adjustments: [],items: [%ExCart.Item{attr: %{}, price: 3, qty: 10, sku: "SU04"}]}
@@ -89,14 +89,14 @@ defmodule ExCart.Cart do
     ## Examples
 
         iex> ex_cart = ExCart.Cart.new
-        iex> adj = ExCart.Adjustment.new(\"shipping\",\"Shipping\",
-        ...> fn(x) ->
-        ...> sb = ExCart.Cart.subtotal(x)
-        ...>  case sb do
-        ...>    sb when sb > 25 -> 0
-        ...>    _-> 10
-        ...>   end
-        iex> end)
+        iex> adj = ExCart.Adjustment.new("shipping","Shipping",
+         fn(x) ->
+         sb = ExCart.Cart.subtotal(x)
+          case sb do
+            sb when sb > 25 -> 0
+            _-> 10
+           end
+         end)
         iex> ex_cart = ExCart.Cart.add_adjustment(ex_cart,adj)
         iex> length ex_cart.adjustments
         1
@@ -112,13 +112,13 @@ defmodule ExCart.Cart do
 
     iex> ex_cart = ExCart.Cart.new
     iex> adj = ExCart.Adjustment.new(\"shipping\",\"Shipping\",
-    ...> fn(x) ->
-    ...> sb = ExCart.Cart.subtotal(x)
-    ...>  case sb do
-    ...>    sb when sb > 25 -> 0
-    ...>    _-> 10
-    ...>   end
-    iex> end)
+     fn(x) ->
+     sb = ExCart.Cart.subtotal(x)
+      case sb do
+        sb when sb > 25 -> 0
+        _-> 10
+       end
+     end)
     iex> ex_cart = ExCart.Cart.add_adjustment(ex_cart, adj)
     iex> length ex_cart.adjustments
     1
@@ -164,7 +164,7 @@ defmodule ExCart.Cart do
 
   @doc """
     Calculate the sum of the result of multiply the price of each item and its quantity
-    
+
     ## Examples
 
         iex> ex_cart = ExCart.Cart.new
@@ -199,13 +199,13 @@ defmodule ExCart.Cart do
       iex> ex_cart = ExCart.Cart.new
       iex> ex_cart = ExCart.Cart.add_item(ex_cart,%ExCart.Item{ sku: "SU04", qty: 5, price: 3 })
       iex> adj = ExCart.Adjustment.new("shipping","Shipping",
-      ...> fn(x) -> 
-      ...> sb = ExCart.Cart.subtotal(x)
-      ...>case sb do
-      ...>  sb when sb > 25 -> 0
-      ...>  _-> 10
-      ...>end
-      ...>end)
+       fn(x) ->
+       sb = ExCart.Cart.subtotal(x)
+      case sb do
+        sb when sb > 25 -> 0
+        _-> 10
+      end
+      end)
       iex> ex_cart = ExCart.Cart.add_adjustment(ex_cart, adj)
       iex> ExCart.Cart.total(ex_cart)
       25

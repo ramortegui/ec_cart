@@ -1,0 +1,7 @@
+{
+  "skip_files": [
+    "deps",
+    "config",
+    "lib/application.ex"
+  ]
+}

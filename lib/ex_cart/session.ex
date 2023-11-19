@@ -65,10 +65,10 @@ defmodule ExCart.Session do
   end
 
   def remove_process(name) do
-    Registry.unregister(@registry_name, name)
+    Registry.unregister(@name, name)
   end
 
-  def via_tuple(name, registry \\ @registry_name) do
+  def via_tuple(name, registry \\ @name) do
     {:via, Registry, {registry, name}}
   end
 end

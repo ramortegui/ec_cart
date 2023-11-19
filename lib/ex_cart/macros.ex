@@ -1,6 +1,6 @@
 defmodule ExCart.Macros do
   defmodule Cart do
-    defmacro __using__(opts) do
+    defmacro __using__(_opts) do
       quote do
         defstruct items: [], adjustments: []
 
@@ -117,7 +117,7 @@ defmodule ExCart.Macros do
   end
 
   defmodule Server do
-    defmacro __using__(opts) do
+    defmacro __using__(_opts) do
       quote do
         use GenServer
 
@@ -201,7 +201,7 @@ defmodule ExCart.Macros do
   end
 
   defmodule Item do
-    defmacro __using__(opts) do
+    defmacro __using__(_opts) do
       quote do
         defstruct sku: nil, price: 0, qty: 1, attr: %{}
 
@@ -213,7 +213,7 @@ defmodule ExCart.Macros do
   end
 
   defmodule Adjustment do
-    defmacro __using__(opts) do
+    defmacro __using__(_opts) do
       quote do
         defstruct name: nil, description: nil, function: nil
 

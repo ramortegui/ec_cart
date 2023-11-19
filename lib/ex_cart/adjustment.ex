@@ -6,7 +6,7 @@ defmodule ExCart.Adjustment do
 
   @doc """
     Creates a structure based on:
-    
+
     `id`  Id of the adjustment
 
     `name`  Name of the adjustment
@@ -20,7 +20,7 @@ defmodule ExCart.Adjustment do
   """
   def new(name, description, function, type \\ nil, id \\ nil) do
     if(is_nil(id)) do
-      id = Nanoid.generate()
+      Nanoid.generate()
     end
 
     %ExCart.Adjustment{
