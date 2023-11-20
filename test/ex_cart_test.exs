@@ -1,4 +1,4 @@
-defmodule ExCart.Test do
+defmodule ExCartTest do
   use ExUnit.Case
   doctest ExCart.Server
   doctest ExCart.Cart

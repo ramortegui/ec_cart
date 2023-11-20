@@ -1,6 +1,12 @@
-# ExCart [![Build Status](https://travis-ci.org/data-twister/ex_cart.svg?branch=master)](https://travis-ci.org/data-twister/ex_cart) [![Inline docs](http://inch-ci.org/github/data-twister/ex_cart.svg?branch=master)](http://inch-ci.org/github/data-twister/ex_cart)
-
+# ExCart
 E-commerce cart for elixir
+
+[![Coverage Status](https://coveralls.io/repos/github/data-twister/ex_cart/badge.svg?branch=main)](https://coveralls.io/github/data-twister/ex_cart?branch=main)
+![CircleCI](https://img.shields.io/circleci/build/github/data-twister/ex_cart)
+[![Version](https://img.shields.io/hexpm/v/ex_cart.svg?style=flat-square)](https://hex.pm/packages/ex_cart)
+![GitHub](https://img.shields.io/github/license/data-twister/ex_cart)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/data-twister/ex_cart/main)
+
 
 ## Installation
 

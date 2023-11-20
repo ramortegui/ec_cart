@@ -1,4 +1,4 @@
-defmodule ExCart.Mixfile do
+defmodule ExCart.MixProject do
   use Mix.Project
 
   @version "1.0.0"
@@ -8,25 +8,32 @@ defmodule ExCart.Mixfile do
     [
       app: :ex_cart,
       version: @version,
-      elixir: "~> 1.13",
-      build_embedded: Mix.env() == :prod,
+      elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      docs: docs(),
       package: package(),
       description: description(),
-      deps: deps(),
       dialyzer: dialyzer()
     ]
   end
 
+  # Run "mix help compile.app" to learn about applications.
   def application do
-    [applications: [:logger, :nanoid], mod: {ExCart.Application, []}]
+    [
+      extra_applications: [:logger, :nanoid],
+      mod: {ExCart.Application, []}
+    ]
   end
 
+  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:nanoid, "2.1.0"},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:earmark, ">= 0.0.0", only: :dev, runtime: false}
+      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:excoveralls, "~> 0.14", only: [:test, :dev]},
+      {:inch_ex, only: :docs},
+      {:mix_audit, ">= 0.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 

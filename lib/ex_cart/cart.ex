@@ -89,14 +89,14 @@ defmodule ExCart.Cart do
     ## Examples
 
         iex> ex_cart = ExCart.Cart.new
-        iex> adj = ExCart.Adjustment.new("shipping","Shipping",
-         fn(x) ->
-         sb = ExCart.Cart.subtotal(x)
-          case sb do
-            sb when sb > 25 -> 0
-            _-> 10
-           end
-         end)
+        iex> adj = ExCart.Adjustment.new(\"shipping\",\"Shipping\",
+        ...> fn(x) ->
+        ...> sb = ExCart.Cart.subtotal(x)
+        ...>  case sb do
+        ...>    sb when sb > 25 -> 0
+        ...>    _-> 10
+        ...>   end
+        iex> end)
         iex> ex_cart = ExCart.Cart.add_adjustment(ex_cart,adj)
         iex> length ex_cart.adjustments
         1
@@ -112,17 +112,17 @@ defmodule ExCart.Cart do
 
     iex> ex_cart = ExCart.Cart.new
     iex> adj = ExCart.Adjustment.new(\"shipping\",\"Shipping\",
-     fn(x) ->
-     sb = ExCart.Cart.subtotal(x)
-      case sb do
-        sb when sb > 25 -> 0
-        _-> 10
-       end
-     end)
+    ...> fn(x) ->
+    ...> sb = ExCart.Cart.subtotal(x)
+    ...>  case sb do
+    ...>    sb when sb > 25 -> 0
+    ...>    _-> 10
+    ...>   end
+    iex> end)
     iex> ex_cart = ExCart.Cart.add_adjustment(ex_cart, adj)
     iex> length ex_cart.adjustments
     1
-    iex> ex_cart = ExCart.Cart.remove_adjustment(ex_cart, \"shipping\")
+    iex> ex_cart = ExCart.Cart.remove_adjustment(ex_cart, "shipping")
     iex> length ex_cart.adjustments
     0
   """
@@ -199,13 +199,13 @@ defmodule ExCart.Cart do
       iex> ex_cart = ExCart.Cart.new
       iex> ex_cart = ExCart.Cart.add_item(ex_cart,%ExCart.Item{ sku: "SU04", qty: 5, price: 3 })
       iex> adj = ExCart.Adjustment.new("shipping","Shipping",
-       fn(x) ->
-       sb = ExCart.Cart.subtotal(x)
-      case sb do
-        sb when sb > 25 -> 0
-        _-> 10
-      end
-      end)
+      ...> fn(x) ->
+      ...> sb = ExCart.Cart.subtotal(x)
+      ...>case sb do
+      ...>  sb when sb > 25 -> 0
+      ...>  _-> 10
+      ...>end
+      ...>end)
       iex> ex_cart = ExCart.Cart.add_adjustment(ex_cart, adj)
       iex> ExCart.Cart.total(ex_cart)
       25
