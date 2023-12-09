@@ -26,8 +26,11 @@ defmodule ExCart.Cart do
     ## Examples
 
         iex> ex_cart = ExCart.Cart.new
-        iex> ExCart.Cart.add_item(ex_cart,%ExCart.Item{ sku: "SU04", qty: 10, price: 3 })
-        %ExCart.Cart{adjustments: [],items: [%ExCart.Item{attr: %{}, price: 3, qty: 10, sku: "SU04"}]}
+        iex> ex_cart = ExCart.Cart.add_item(ex_cart,%ExCart.Item{ sku: "SU04", qty: 1, price: 3 })
+        iex> ex_cart = ExCart.Cart.add_item(ex_cart,%ExCart.Item{ sku: "SU04", qty: 1, price: 3 })
+        %ExCart.Cart{adjustments: [],items: [%ExCart.Item{attr: %{}, price: 3, qty: 2, sku: "SU04"}]}
+        iex> ExCart.Cart.subtotal(ex_cart)
+        6
 
   """
   def add_item(%ExCart.Cart{} = ex_cart, %ExCart.Item{} = cart_item) do
@@ -49,17 +52,18 @@ defmodule ExCart.Cart do
   end
 
   defp update_items(items, %ExCart.Item{sku: sku} = cart_item) do
-    items =
+    updated_items =
       Enum.map(items, fn
         %ExCart.Item{sku: ^sku} = item ->
           %ExCart.Item{item | qty: item.qty + cart_item.qty}
-
-        _ ->
-          cart_item
+        item ->
+          item
       end)
 
-    if Enum.count(items) > @max_items do
-      {_, updated_items} = List.pop_at(items, -1)
+    if Enum.count(updated_items) > @max_items do
+      {_, updated_items} = List.pop_at(updated_items, -1)
+      updated_items
+    else
       updated_items
     end
   end
