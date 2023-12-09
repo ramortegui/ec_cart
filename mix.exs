@@ -1,28 +1,39 @@
-defmodule Ec.Cart.Mixfile do
+defmodule ExCart.MixProject do
   use Mix.Project
+
+  @version "1.0.0"
+  @source_url "https://github.com/data-twister/ExCart"
 
   def project do
     [
-      app: :ec_cart,
-      version: "0.1.5",
-      elixir: "~> 1.6",
-      build_embedded: Mix.env() == :prod,
+      app: :ex_cart,
+      version: @version,
+      elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      docs: docs(),
       package: package(),
       description: description(),
-      deps: deps()
+      dialyzer: dialyzer()
     ]
   end
 
+  # Run "mix help compile.app" to learn about applications.
   def application do
-    [applications: [:logger], mod: {EcCart, []}]
+    [
+      extra_applications: [:logger, :nanoid],
+      mod: {ExCart.Application, []}
+    ]
   end
 
+  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_doc, "~> 0.14", only: :dev},
-      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
-      {:inch_ex, ">= 0.0.0", only: :docs}
+      {:nanoid, "2.1.0"},
+      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:excoveralls, "~> 0.14", only: [:test, :dev]},
+      {:inch_ex, only: :docs},
+      {:mix_audit, ">= 0.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -33,11 +44,34 @@ defmodule Ec.Cart.Mixfile do
   defp package do
     # These are the default files included in the package
     [
-      name: :ec_cart,
+      name: :ex_cart,
       files: ["lib", "mix.exs", "README*"],
-      maintainers: ["Ruben Amortegui"],
+      maintainers: ["Jason Clark"],
       licenses: ["Apache 2.0"],
-      links: %{"GitHub" => "https://github.com/ramortegui/ec_cart"}
+      links: %{"GitHub" => "https://github.com/data-twister/ex_cart"}
+    ]
+  end
+
+  defp dialyzer() do
+    [
+      plt_add_deps: :transitive,
+      plt_add_apps: [:ex_unit, :mix],
+      flags: [
+        :error_handling,
+        :race_conditions,
+        :underspecs,
+        :unmatched_returns
+      ]
+    ]
+  end
+
+  defp docs() do
+    [
+      extras: ["README.md"],
+      main: "readme",
+      homepage_url: @source_url,
+      source_ref: "v#{@version}",
+      source_url: @source_url,
     ]
   end
 end

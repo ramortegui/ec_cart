@@ -1,6 +1,6 @@
 # This file is responsible for configuring your application
 # and its dependencies with the aid of the Mix.Config module.
-use Mix.Config
+require Mix.Config
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :ec_cart, key: :value
+#     config :ex_cart, max_items: 100
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:ec_cart, :key)
+#     Application.get_env(:ex_cart, :key)
 #
 # Or configure a 3rd-party app:
 #

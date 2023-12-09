@@ -1,11 +1,17 @@
-# EcCart [![Build Status](https://travis-ci.org/ramortegui/ec_cart.svg?branch=master)](https://travis-ci.org/ramortegui/ec_cart) [![Inline docs](http://inch-ci.org/github/ramortegui/ec_cart.svg?branch=master)](http://inch-ci.org/github/ramortegui/ec_cart)
-
+# ExCart
 E-commerce cart for elixir
 
-## Instalation
+[![Coverage Status](https://coveralls.io/repos/github/data-twister/ex_cart/badge.svg?branch=main)](https://coveralls.io/github/data-twister/ex_cart?branch=main)
+![CircleCI](https://img.shields.io/circleci/build/github/data-twister/ex_cart)
+[![Version](https://img.shields.io/hexpm/v/ex_cart.svg?style=flat-square)](https://hex.pm/packages/ex_cart)
+![GitHub](https://img.shields.io/github/license/data-twister/ex_cart)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/data-twister/ex_cart/main)
+
+
+## Installation
 
     - clone the repo
-    - cd ec_cart
+    - cd ex_cart
     - mix deps.get
 
 ## Run on iex
@@ -14,57 +20,63 @@ E-commerce cart for elixir
 
 ## Use to store values 
 
-    ec_cart = EcCart.Cart.new
-    ec_cart = EcCart.Cart.add_item(ec_cart, %EcCart.Item{ec_sku: "SU04", ec_qty: 10, ec_price: 3})
-    adj = EcCart.Adjustment.new("shipping","Shipping",
+    ex_cart = ExCart.Cart.new
+    ex_cart = ExCart.Cart.add_item(ex_cart, %ExCart.Item{ec_sku: "SU04", ec_qty: 10, ec_price: 3})
+    adj = ExCart.Adjustment.new("shipping","Shipping",
       fn(x) ->
-      sb = EcCart.Cart.subtotal(x)
+      sb = ExCart.Cart.subtotal(x)
         case sb do
           sb when sb > 25 -> 0
           _-> 10
         end
     end)
-    ec_cart = EcCart.Cart.add_adjustment(ec_cart,adj)
-    EcCart.Cart.total(ec_cart)
+    ex_cart = ExCart.Cart.add_adjustment(ex_cart,adj)
+    ExCart.Cart.total(ex_cart)
 
 ## Use as server (manage multiple cart processes and their states).
 
-    {:ok, pid1} = EcCart.Server.start_link
-    EcCart.Server.add_item(pid1, %EcCart.Item{ec_sku: "SU01", ec_qty: 10, ec_price: 3})
-    {:ok, pid2} = EcCart.Server.start_link
-    EcCart.Server.add_item(pid2, %EcCart.Item{ec_sku: "SU02", ec_qty: 5, ec_price: 3})
-    adj = EcCart.Adjustment.new("shipping","Shipping",
+    {:ok, pid1} = ExCart.Server.start_link
+    ExCart.Server.add_item(pid1, %ExCart.Item{ec_sku: "SU01", ec_qty: 10, ec_price: 3})
+    {:ok, pid2} = ExCart.Server.start_link
+    ExCart.Server.add_item(pid2, %ExCart.Item{ec_sku: "SU02", ec_qty: 5, ec_price: 3})
+    adj = ExCart.Adjustment.new("shipping","Shipping",
         fn(x) ->
-            sb = EcCart.Cart.subtotal(x)
+            sb = ExCart.Cart.subtotal(x)
                 case sb do
                     sb when sb > 25 -> 0
                     _-> 10
                 end
         end)
-    EcCart.Server.add_adjustment(pid1,adj)
-    EcCart.Server.add_adjustment(pid2,adj)
-    EcCart.Server.total(pid1)
-    EcCart.Server.total(pid2)
+    ExCart.Server.add_adjustment(pid1,adj)
+    ExCart.Server.add_adjustment(pid2,adj)
+    ExCart.Server.total(pid1)
+    ExCart.Server.total(pid2)
 
-## How to use the cache to manage multiple EcCartServers
+## How to use the registry to manage multiple ExCartServers
 
-    {:ok, cache } = EcCart.Cache.start_link
-    cart_one = EcCart.Cache.server_process("cart one")
-    EcCart.Server.add_item(cart_one, %EcCart.Item{ec_sku: "SU01", ec_price: 10})
-    EcCart.Server.add_item(cart_one, %EcCart.Item{ec_sku: "SU02", ec_price: 15})
-    EcCart.Server.subtotal(cart_one)
-    cart_two = EcCart.Cache.server_process("cart two")
-    EcCart.Server.add_item(cart_two, %EcCart.Item{ec_sku: "SU01", ec_price: 2})
-    EcCart.Server.add_item(cart_two, %EcCart.Item{ec_sku: "SU03", ec_price: 1})
-    EcCart.Server.subtotal(cart_two)
+    {:ok, session } = ExCart.Session.start_link
+    cart_one = ExCart.Session.server_process("cart one")
+    ExCart.Server.add_item(cart_one, %ExCart.Item{ec_sku: "SU01", ec_price: 10})
+    ExCart.Server.add_item(cart_one, %ExCart.Item{ec_sku: "SU02", ec_price: 15})
+    ExCart.Server.subtotal(cart_one)
+
+    cart_two = ExCart.Session.server_process("cart two")
+    ExCart.Server.add_item(cart_two, %ExCart.Item{ec_sku: "SU01", ec_price: 2})
+    ExCart.Server.add_item(cart_two, %ExCart.Item{ec_sku: "SU03", ec_price: 1})
+    ExCart.Server.subtotal(cart_two)
+
+## How to use the Dynamic Supervised ExCartServers
+
+    {:ok, pid } = ExCart.Cart.Supervisor.start_cart()
+    ExCart.Server.state(pid)
 
 ## How to use the supervisor as starting point.
 
-    EcCart.Supervisor.start_link
-    cart_one = EcCart.Cache.server_process("cart one")
-    EcCart.Server.add_item(cart_one, %EcCart.Item{ec_sku: "SU01", ec_price: 10})
-    EcCart.Server.add_item(cart_one, %EcCart.Item{ec_sku: "SU02", ec_price: 15})
-    EcCart.Server.subtotal(cart_one)
+    ExCart.Supervisor.start_link
+    cart_one = ExCart.Session.server_process("cart one")
+    ExCart.Server.add_item(cart_one, %ExCart.Item{ec_sku: "SU01", ec_price: 10})
+    ExCart.Server.add_item(cart_one, %ExCart.Item{ec_sku: "SU02", ec_price: 15})
+    ExCart.Server.subtotal(cart_one)
 
 ### To use with Phoenix:
   - Add as dependency 
@@ -76,19 +88,14 @@ E-commerce cart for elixir
       
       iex(n)>:observer.start
         
-      #And you will see the ec_cart application aside of your app.
+      #And you will see the ex_cart application aside of your app.
 
-## TODO
-
-  - Features to add:
-    * Remove adjustments.
-    * Get the result of and adjustment based on their name.
-    * Cart summary.
-    * Add Dynamic supervision for each cart instead one supervision for the
-      cache
+## Settings (config.exs)
+  - config :ex_cart, max_items: 1000 
 
 ## License
 
+Copyright 2022 Jason Clark
 Copyright 2018 Ruben Amortegui
 
 Licensed under the Apache License, Version 2.0 (the "License");
